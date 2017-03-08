@@ -5,7 +5,6 @@ namespace App\Model;
 class View
 {
     private $file;
-
     private $title;
 
     public function __construct($action, $controller = "")
@@ -36,7 +35,7 @@ class View
             ob_start();
             require "$file";
             return ob_get_clean();
-        }else {
+        } else {
             throw new \Exception("Fichier $file introuvable");
         }
     }

@@ -41,4 +41,6 @@ abstract class Controller
         $view = new View($actionView, $controllerView);
         $view->generate($dataView);
     }
+    
+    // Faire une fonction de redirection
 }

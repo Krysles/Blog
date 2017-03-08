@@ -10,11 +10,10 @@ class Router
         $controller = $this->createController($request);
         $bookname = $this->createBookname($request);
         $action = $this->createAction($request);
-
         $controller->runAction($action);
         
-        debug($request);
-        debug($controller);
+        //debug($request);
+        //debug($controller);
 
     }
 

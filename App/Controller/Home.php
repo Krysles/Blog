@@ -5,11 +5,20 @@ use App\Model\Controller;
 
 class Home extends Controller
 {
+    private $home;
+    
+    public function __construct()
+    {
+        $this->home = new \App\Model\Home();
+    }
+
     public function index()
     {
-        $params = 'Parametres';
+        $home = $this->home->getHome();
+        $book = $this->home->getBook(1);
         $this->generateView(array(
-            'params' => $params
+            'home' => $home,
+            'book' => $book
         ));
     }
 }
