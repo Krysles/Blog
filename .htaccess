@@ -1,7 +1,8 @@
-# Réécriture d'une URL de type www/xxx/yyy/zzz en index.php?controller=www&book=xxx&action=yyy&id=zzz
+# Réécriture d'une URL de type www/xxx/yyy/zzz en index.php?controller=www&action=xxx&bookname=yyy&id=zzz
 # controller    - alphanumeric
-# bookname      - alphanumeric, numeric, tiret
 # action        - alphanumeric
+# bookname      - alphanumeric, numeric, tiret
 # id            - numeric
 RewriteEngine on
-RewriteRule ^([a-zA-Z]*)?/?([a-zA-Z0-9\-]*)/?([a-zA-Z]*)?/?([0-9]*)?/?$ index.php?controller=$1&bookname=$2&action=$3&id=$4 [NC,L]
+RewriteRule ^([a-zA-Z]*)?/?([a-zA-Z]*)?/?([a-zA-Z0-9\-]*)?/?([0-9]*)?/?$ index.php?controller=$1&action=$2&bookname=$3&id=$4 [NC,L]
+#RewriteRule ^([a-zA-Z]*)?/?([a-zA-Z0-9\-]*)/?([a-zA-Z]*)?/?([0-9]*)?/?$ index.php?controller=$1&bookname=$2&action=$3&id=$4 [NC,L]
