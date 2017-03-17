@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="/style/images/favicon.png">
-    <title><?php echo $title.' - Jean Forteroche'; ?></title>
+    <title><?php echo $title . ' - Jean Forteroche'; ?></title>
     <!-- Bootstrap core CSS -->
     <link href="/style/css/bootstrap.min.css" rel="stylesheet">
     <link href="/style/css/plugins.css" rel="stylesheet">
@@ -32,7 +32,8 @@
 <div class="body-wrapper">
     <nav class="navbar navbar-default" role="navigation">
         <div class="navbar-header"><a class="btn responsive-menu" data-toggle="collapse" data-target=".navbar-collapse"><i></i></a>
-            <div class="navbar-brand text-center"><a href="/"><img src="/style/images/logo.png" alt="" data-src="/style/images/logo.png" data-ret="/style/images/logo@2x.png" class="retina"/></a></div>
+            <div class="navbar-brand text-center"><a href="/"><img src="/style/images/logo.png" alt="" data-src="/style/images/logo.png" data-ret="/style/images/logo@2x.png"
+                                                                   class="retina"/></a></div>
             <!-- /.navbar-brand -->
         </div>
         <!-- /.navbar-header -->
@@ -46,10 +47,13 @@
                 <li><a href="./#about" class="hint--right" data-hint="Résumé du livre"><i class="budicon-note-9"></i><span>Résumé du livre</span></a></li>
                 <li><a href="blog.php" class="hint--right" data-hint="Lire le livre"><i class="budicon-book-1"></i><span>Lire le livre</span></a></li>
                 <li><a href="./#contact" class="hint--right" data-hint="Contact"><i class="budicon-profile"></i><span>Contact</span></a></li>
-                <li><a href="./#connexion" class="hint--right" data-hint="Connexion"><i class="budicon-author"></i><span>Connexion</span></a></li>
-                <!-- modifier le chemin pour l'admin vers admin.php par ex... -->
-                <li><a href="elements.html" class="hint--right" data-hint="Administration"><i class="budicon-setting"></i><span>Administration</span></a></li>
-                <li><a href="#elsewhere" class="hint--right fancybox-inline" data-hint="Retrouvez-moi" data-fancybox-width="325" data-fancybox-height="220"><i class="icon-heart-empty-1"></i><span>Retrouvez-moi</span></a></li>
+                <!-- Remplacer le li si dessous par un lien de déconnexion direct -->
+                <li><a href="./#register" class="hint--right" data-hint="Inscription"><i class="budicon-author"></i><span>Inscription</span></a></li>
+                <li><a href="./#connexion" class="hint--right" data-hint="Connexion"><i class="budicon-lock"></i><span>Connexion</span></a></li>
+                <!-- modifier le chemin pour l'admin vers admin.php par ex... et afficher ce li si l'utilisateur est connecté -->
+                <li><a href="elements.html" class="hint--right" data-hint="Mon compte"><i class="budicon-setting"></i><span>Mon compte</span></a></li>
+                <li><a href="#elsewhere" class="hint--right fancybox-inline" data-hint="Retrouvez-moi" data-fancybox-width="325" data-fancybox-height="220"><i
+                            class="icon-heart-empty-1"></i><span>Retrouvez-moi</span></a></li>
             </ul>
             <!-- /.navbar-nav -->
         </div>
@@ -70,10 +74,23 @@
         <!-- /#elsewhere -->
     </nav>
     <!-- /.navbar -->
-    
+
+
+    <?php if (isset($_SESSION['flash'])) : ?>
+        <?php foreach ($_SESSION['flash'] as $type => $message) : ?>
+            <div id="error">
+                <div class="response alert alert-<?php echo $type; ?>">
+                    <?php echo $message; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        <?php unset($_SESSION['flash']); ?>
+    <?php endif; ?>
+
+
     <!-- Chargement de la vue -->
     <?php echo $content; ?>
-    
+
 </div>
 <!-- /.body-wrapper -->
 <script src="/style/js/jquery.min.js"></script>

@@ -307,16 +307,18 @@ hr {
     margin-bottom: 70px;
 }
 .alert {
-    padding: 15px;
-    padding-bottom: 13px;
-    margin-bottom: 20px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
     border-width: 2px;
     border-radius: 0;
     background: none;
 }
 .alert-success {
     border-color: #3c763d;
+    border-color: green;
     color: #3c763d;
+    color: green;
+    font-weight: 800;
 }
 .alert-info {
     border-color: #31708f;
@@ -328,7 +330,10 @@ hr {
 }
 .alert-danger {
     border-color: #a94442;
+    border-color: #C4271B;
     color: #a94442;
+    color: #C4271B;
+    font-weight: 800;
 }
 .alert .close {
     float: right;
@@ -712,6 +717,30 @@ video {
 /*-----------------------------------------------------------------------------------*/
 /*	04. CONTENT
 /*-----------------------------------------------------------------------------------*/
+@keyframes delete {
+    form {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+#error {
+    background: rgba(30,30,31,0.85);
+    position: fixed;
+    width: 50%;
+    z-index: 99999;
+    padding: 10px;
+    padding-bottom: 0;
+    left: 50%;
+    margin-left: -25%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    animation: delete 5s;
+    animation-timing-function: ease-in;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+}
 section {
     padding-top: 50px;
     margin-bottom: 150px;
@@ -728,6 +757,7 @@ section.naked {
     margin: 0;
     padding: 0 !important;
     position: relative;
+    min-height: 800px;
 }
 /* background setup */
 .background {
@@ -2942,6 +2972,9 @@ textarea {
 .tm20 {
     margin-top: 20px
 }
+.tm31 {
+    margin-top: 31px
+}
 .tm40 {
     margin-top: 40px
 }
@@ -3067,7 +3100,7 @@ textarea {
 }
 @media (min-width: 1271px) { 
 	.body-wrapper {
-	    padding-left: 80px
+	    padding-left: 80px;
 	}
 	.navbar-collapse {
 	    height: auto;

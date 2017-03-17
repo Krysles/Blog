@@ -6,7 +6,8 @@ class Router
     public function run()
     {
         // mettre un try catch
-        $request = new Request(array_merge($_GET, $_POST));
+        session_start();
+        $request = new Request($_GET, $_POST);
         $controller = $this->createController($request);
         $action = $this->createAction($request);
         $bookname = $this->createBookname($request);
@@ -16,8 +17,8 @@ class Router
     public function createController(Request $request)
     {
         $controller = 'Home';
-        if ($request->existParams('controller')) {
-            $controller = $request->getParams('controller');
+        if ($request->existParam('get', 'controller')) {
+            $controller = $request->getParam('get', 'controller');
             $controller = ucfirst(strtolower($controller));
         }
         $controllerClass = 'App\Controller\\' . $controller;
@@ -34,8 +35,8 @@ class Router
     public function createAction(Request $request)
     {
         $action = 'index';
-        if ($request->existParams('action')) {
-            $action = $request->getParams('action');
+        if ($request->existParam('get', 'action')) {
+            $action = $request->getParam('get', 'action');
         }
         return $action;
     }
@@ -43,8 +44,8 @@ class Router
     public function createBookname(Request $request)
     {
         $bookname = 'the-last';
-        if ($request->existParams('bookname')) {
-            $bookname = $request->getParams('bookname');
+        if ($request->existParam('get', 'bookname')) {
+            $bookname = $request->getParam('get', 'bookname');
         }
         return $bookname;
     }

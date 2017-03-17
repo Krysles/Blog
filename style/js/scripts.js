@@ -209,8 +209,8 @@ jQuery(document).ready(function() {
 	header_height = jQuery('.navbar').height(),
 	navItems = jQuery('.navbar ul a[href^="#"]').not('.navbar ul a[href="#"], .navbar ul a.fancybox-inline');
 	jQuery('.offset').css('padding-top', header_height + 'px');
-	jQuery('.anchor').css('padding-top', shrinked_header_height + 'px');  
-	jQuery('.anchor').css('margin-top', -(shrinked_header_height) + 'px');    
+	jQuery('.anchor').css('padding-top', shrinked_header_height + 'px');
+	jQuery('.anchor').css('margin-top', -(shrinked_header_height) + 'px');
 	offsetTolerance = -(header_height);
 	//Detecting user's scroll
 	jQuery(window).scroll(function() {

@@ -10,12 +10,7 @@ abstract class Controller
     {
         $this->request = $request;
     }
-
-//    public function getRequest()
-//    {
-//        return $this->request;
-//    }
-
+    
     public function runAction($action, $bookname)
     {
         if (method_exists($this, $action)) {
