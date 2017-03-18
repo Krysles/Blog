@@ -28,14 +28,16 @@ class Register
 
     public function isValid()
     {
-        // Doit retourner true ou false
         $this->isValidLastname($this->user->getLastname());
         $this->isValidFirstname($this->user->getFirstname());
         $this->isValidEmail($this->user->getEmail());
         $this->isValidPassword($this->user->getPassword(), $this->user->getConfirmPassword());
         $this->isValidRole('visitor');
-        
-        if (empty($this->errors)) { return true; } else { return false; }
+        if (empty($this->errors)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private function isValidLastname($lastname)
@@ -92,10 +94,23 @@ class Register
             $this->setErrors('confirmPassword', "Le mot de passe peut contenir 15 caractères maximum.");
         }
     }
-    
-    private function isValidRole($value) {
+
+    private function isValidRole($value)
+    {
         if (!Validator::validRole($this->user, $value)) {
             throw new \Exception("Un problème est survenu lors de l'inscription.");
         }
+    }
+
+    public function register()
+    {
+        $this->user->setPassword(Services::hashPassword($this->user->getPassword()));
+        $this->user->setConfirmPassword(null);
+
+        $this->user->setConfirmToken(Services::generateToken(60));
+        
+        
+        // Send Email
+        // Registration bdd
     }
 }

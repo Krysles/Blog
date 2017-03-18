@@ -32,6 +32,7 @@ class Home extends Controller
             $register = new \App\Model\Register($datasForm);
             if ($register->isValid()) {
                 
+                $register->register();
                 
                 // On inscrit l'utilisateur
                 // -> hacher le pass
