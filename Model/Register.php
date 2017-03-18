@@ -11,20 +11,11 @@ class Register
         $this->user = new \App\Model\User($datasForm);
     }
 
-    public function getErrors()
-    {
-        return $this->errors;
-    }
+    public function getErrors() { return $this->errors; }
 
-    public function setErrors($fieldname, $error)
-    {
-        $this->errors[$fieldname] = $error;
-    }
+    public function setErrors($fieldname, $error) { $this->errors[$fieldname] = $error; }
 
-    public function getUser()
-    {
-        return $this->user;
-    }
+    public function getUser() { return $this->user; }
 
     public function isValid()
     {
@@ -106,11 +97,9 @@ class Register
     {
         $this->user->setPassword(Services::hashPassword($this->user->getPassword()));
         $this->user->setConfirmPassword(null);
-
         $this->user->setConfirmToken(Services::generateToken(60));
-        
-        
-        // Send Email
-        // Registration bdd
+        $this->user->insertUser();
+        $message = new \App\Model\Message($this->user);
+        $message->sendRegister();
     }
 }

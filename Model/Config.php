@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-class DatabaseConfig
+class Config
 {
     private static $params;
 

@@ -31,19 +31,7 @@ class Home extends Controller
             $datasForm = $this->request->getParams('post');
             $register = new \App\Model\Register($datasForm);
             if ($register->isValid()) {
-                
                 $register->register();
-                
-                // On inscrit l'utilisateur
-                // -> hacher le pass
-                // -> lui mettre un role
-                // -> générer le token
-                // -> inscrire en bdd
-                // -> envoyer le mail
-
-
-
-                
                 $_SESSION['flash']['success'] = "Un email de confirmation vient de vous êtes envoyé.";
             } else {
                 $_SESSION['register'] = $register->getUser();

@@ -21,9 +21,9 @@ abstract class Database
     private static function getBdd()
     {
         if (self::$bdd == null) {
-            $dsn = DatabaseConfig::get("dsn");
-            $login = DatabaseConfig::get("login");
-            $password = DatabaseConfig::get("password");
+            $dsn = Config::get("bddsn");
+            $login = Config::get("bdlogin");
+            $password = Config::get("bdpassword");
             self::$bdd = new PDO($dsn, $login, $password, array(
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
