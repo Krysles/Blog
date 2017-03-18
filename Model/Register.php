@@ -5,6 +5,7 @@ class Register
 {
     private $user;
     private $errors = array();
+    private $message;
 
     public function __construct($datasForm)
     {
@@ -99,7 +100,7 @@ class Register
         $this->user->setConfirmPassword(null);
         $this->user->setConfirmToken(Services::generateToken(60));
         $this->user->insertUser();
-        $message = new \App\Model\Message($this->user);
-        $message->sendRegister();
+        $this->message = new \App\Model\Message($this->user);
+        $this->message->sendRegister();
     }
 }
