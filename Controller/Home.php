@@ -10,13 +10,13 @@ class Home extends Controller
 
     public function __construct()
     {
-        // est ce utile car pas besoin dans les autres actions...
-        $this->websiteConfig = new \App\Model\WebsiteConfig();
-        $this->book = new \App\Model\Book();
+        
     }
 
     public function index($bookname)
     {
+        $this->websiteConfig = new \App\Model\WebsiteConfig();
+        $this->book = new \App\Model\Book();
         $config = $this->websiteConfig->getConfig();
         $book = $this->book->getTheLastBook();
         $this->generateView(array(

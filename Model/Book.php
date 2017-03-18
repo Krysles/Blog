@@ -17,7 +17,7 @@ class Book extends Database
 
     public function getTheLastBook()
     {
-        $sql = $this->getBaseQuery() . 'WHERE b.id = (SELECT MAX(id) FROM book)';
+        $sql = $this->getBaseQuery() . 'ORDER BY b.id DESC';
         $theLastBook = $this->runRequest($sql)->fetch();
         return $theLastBook;
     }
