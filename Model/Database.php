@@ -31,4 +31,9 @@ abstract class Database
         }
         return self::$bdd;
     }
+
+    protected function getLastInsertId()
+    {
+        return self::$bdd->lastInsertId();
+    }
 }

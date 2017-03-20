@@ -1,15 +1,15 @@
 <?php
 namespace App\Model;
 
-class Register
+class Register extends Database
 {
     private $user;
     private $errors = array();
-    private $message;
+    private $register;
 
-    public function __construct($datasForm)
+    public function __construct()
     {
-        $this->user = new \App\Model\User($datasForm);
+        $this->user = new \App\Model\User();
     }
 
     public function getErrors() { return $this->errors; }
@@ -17,6 +17,8 @@ class Register
     public function setErrors($fieldname, $error) { $this->errors[$fieldname] = $error; }
 
     public function getUser() { return $this->user; }
+    
+    public function setUser($user) { $this->user->hydrate($user); }
 
     public function isValid()
     {
@@ -100,7 +102,41 @@ class Register
         $this->user->setConfirmPassword(null);
         $this->user->setConfirmToken(Services::generateToken(60));
         $this->user->insertUser();
-        $this->message = new \App\Model\Message($this->user);
-        $this->message->sendRegister();
+        $message = new \App\Model\Message($this->user);
+        $message->sendValidRegister();
+    }
+
+    public function isConfirmed($id, $token)
+    {
+        $this->checkRegister($id, $token);
+        if (empty($this->errors)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkRegister($id, $token)
+    {
+        if (!$this->getRegister($id, $token)) {
+            $this->setErrors('register', "Aucun membre inscrit.");
+        }
+    }
+
+    public function getRegister($id, $token)
+    {
+        $sql = 'SELECT id, lastname, firstname, email, role, confirmToken FROM user WHERE id = ? AND confirmToken = ?';
+        $this->register = $this->runRequest($sql, array($id, $token))->fetch(\PDO::FETCH_ASSOC);
+        return $this->register;
+    }
+
+    public function valideRegister()
+    {
+        $this->user->hydrate($this->register);
+        $this->user->setConfirmToken(null);
+        $this->user->setRole('membre');
+        $this->user->updateUser();
+        $message = new \App\Model\Message($this->user);
+        $message->sendConfirmRegister();
     }
 }

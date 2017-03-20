@@ -15,7 +15,7 @@ abstract class Mailer
         $mail->setSubject($objet);
         $mail->setFrom($from);
         $mail->setTo($to);
-        $mail->setBody($content);
+        $mail->setBody($content, 'text/html');
         return $mail;
     }
 
