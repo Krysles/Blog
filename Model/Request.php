@@ -4,11 +4,18 @@ namespace App\Model;
 class Request
 {
     private $params = array();
+    private $session;
 
     public function __construct($get, $post)
     {
         $this->params['get'] = $this->clean($get);
         $this->params['post'] = $this->clean($post);
+        $this->session = new Session();
+    }
+
+    public function getSession()
+    {
+        return $this->session;
     }
 
     public function existParam($method, $name)

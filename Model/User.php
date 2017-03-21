@@ -3,6 +3,11 @@ namespace App\Model;
 
 class User extends Database
 {
+    const BANNED = 0;
+    const VISITOR = 10;
+    const MEMBER = 20;
+    const ADMIN = 50;
+    
     private $id;
     private $lastname;
     private $firstname;
@@ -49,17 +54,7 @@ class User extends Database
             }
         }
     }
-
-    public function checkEmail()
-    {
-        $sql = 'SELECT COUNT(email) AS total FROM user WHERE email = ?';
-        if ($this->runRequest($sql, array($this->email))->fetch()->total != 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    
     public function insertUser()
     {
         $sql = 'INSERT INTO user SET lastname = ?, firstname = ?, password = ?, email = ?, role = ?, confirmToken = ?';

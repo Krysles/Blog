@@ -47,11 +47,16 @@
                 <li><a href="./#about" class="hint--right" data-hint="Résumé du livre"><i class="budicon-note-9"></i><span>Résumé du livre</span></a></li>
                 <li><a href="blog.php" class="hint--right" data-hint="Lire le livre"><i class="budicon-book-1"></i><span>Lire le livre</span></a></li>
                 <li><a href="./#contact" class="hint--right" data-hint="Contact"><i class="budicon-profile"></i><span>Contact</span></a></li>
-                <!-- Remplacer le li si dessous par un lien de déconnexion direct -->
+                
+                
+                <?php if (isset($_SESSION['auth']) && !empty($_SESSION)) : ?>
+                <li><a href="elements.html" class="hint--right" data-hint="Mon compte"><i class="budicon-setting"></i><span>Mon compte</span></a></li>
+                <li><a href="./home/deconnexion" class="hint--right" data-hint="Déconnexion"><i class="budicon-cancel-1"></i><span>Déconnexion</span></a></li>
+                <?php else : ?>
                 <li><a href="./#register" class="hint--right" data-hint="Inscription"><i class="budicon-author"></i><span>Inscription</span></a></li>
                 <li><a href="./#connexion" class="hint--right" data-hint="Connexion"><i class="budicon-lock"></i><span>Connexion</span></a></li>
-                <!-- modifier le chemin pour l'admin vers admin.php par ex... et afficher ce li si l'utilisateur est connecté -->
-                <li><a href="elements.html" class="hint--right" data-hint="Mon compte"><i class="budicon-setting"></i><span>Mon compte</span></a></li>
+                    
+                <?php endif; ?>
                 <li><a href="#elsewhere" class="hint--right fancybox-inline" data-hint="Retrouvez-moi" data-fancybox-width="325" data-fancybox-height="220"><i
                             class="icon-heart-empty-1"></i><span>Retrouvez-moi</span></a></li>
             </ul>

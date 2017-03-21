@@ -6,7 +6,6 @@ class Router
     public function run()
     {
         // mettre un try catch
-        session_start();
         $request = new Request($_GET, $_POST);
         $controller = $this->createController($request);
         $action = $this->createAction($request);

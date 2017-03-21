@@ -33,13 +33,13 @@ class Home extends Controller
             $register->setUser($datasForm);
             if ($register->isValid()) {
                 $register->register();
-                $_SESSION['flash']['success'] = "Un email de confirmation vient de vous êtes envoyé.";
+                $this->request->getSession()->setAttribut('flash', $register->getMessage());
                 header('Location: /');
                 exit();
             } else {
-                $_SESSION['register'] = $register->getUser();
-                $_SESSION['errors'] = $register->getErrors();
-                $_SESSION['flash']['danger'] = "Un problème a été rencontré lors de l'inscription.";
+                $this->request->getSession()->setAttribut('registerForm', $register->getUser());
+                $this->request->getSession()->setAttribut('registerErrors', $register->getValidator()->getErrors());
+                $this->request->getSession()->setAttribut('flash', $register->getMessage());
                 header('Location: /#register');
                 exit();
             }
@@ -50,15 +50,50 @@ class Home extends Controller
             $token = $this->request->getParam('get', 'token');
             if ($register->isConfirmed($id, $token)) {
                 $register->valideRegister();
-                $_SESSION['flash']['success'] = "Votre compte a bien été validé.";
+                $this->request->getSession()->setAttribut('flash', $register->getMessage());
                 header('Location: /#connexion');
                 exit();
             } else {
-                $_SESSION['flash']['danger'] = "Un problème a été rencontré contactez l'administrateur.";
+                $this->request->getSession()->setAttribut('flash', $register->getMessage());
                 header('Location: /');
                 exit();
             }
         }
+        header('Location: /');
+        exit();
+    }
+
+    public function connexion()
+    {
+        if ($this->request->existParam('post', 'connexion')) {
+            $datasForm = $this->request->getParams('post');
+            $connexion = new \App\Model\Connexion();
+            $connexion->setUser($datasForm);
+            if ($connexion->isValid()) {
+                if ($connexion->connexion()) {
+                    $this->request->getSession()->setAttribut('auth', $connexion->getUser());
+                    $this->request->getSession()->setAttribut('flash', $connexion->getMessage());
+                    header('Location: /');
+                    exit();
+                }
+                $this->request->getSession()->setAttribut('flash', $connexion->getMessage());
+                header('Location: /#connexion');
+                exit();
+            } else {
+                $this->request->getSession()->setAttribut('connexionErrors', $connexion->getValidator()->getErrors());
+                $this->request->getSession()->setAttribut('flash', $connexion->getMessage());
+                header('Location: /#connexion');
+                exit();
+            }
+        }
+        header('Location: /');
+        exit();
+    }
+
+    public function deconnexion()
+    {
+        $this->request->getSession()->deconnexion();
+        $this->request->getSession()->setAttribut('flash', array('success' => 'Vous avez été déconnecté.'));
         header('Location: /');
         exit();
     }
