@@ -49,7 +49,7 @@
                 <li><a href="./#contact" class="hint--right" data-hint="Contact"><i class="budicon-profile"></i><span>Contact</span></a></li>
                 
                 
-                <?php if (isset($_SESSION['auth']) && !empty($_SESSION)) : ?>
+                <?php if (isset($_SESSION['auth']) && !empty($_SESSION['auth'])) : ?>
                 <li><a href="elements.html" class="hint--right" data-hint="Mon compte"><i class="budicon-setting"></i><span>Mon compte</span></a></li>
                 <li><a href="./home/deconnexion" class="hint--right" data-hint="Déconnexion"><i class="budicon-cancel-1"></i><span>Déconnexion</span></a></li>
                 <?php else : ?>

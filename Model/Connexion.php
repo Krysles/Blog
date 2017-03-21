@@ -39,10 +39,11 @@ class connexion extends Database
             if (password_verify($this->user->getPassword(), $this->connexion['password'])) {
                 $this->user->hydrate($this->getConnexion());
                 $this->user->setPassword(null);
-                $this->setMessage('success', "Membre ok Mdp ok......");
+                $this->setMessage('success', 'Bienvenue '. $this->user->getFirstname() . ' ' . $this->user->getLastname());
+                $this->setMessage('success', 'Bienvenue '. $this->user->getFirstname() . ' ' . $this->user->getLastname());
                 return true;
             } else {
-                $this->setMessage('danger', "le mot de passe est incorrect");
+                $this->setMessage('danger', "Veuillez vérifier vos identifiants.");
                 return false;
             }
         } else {

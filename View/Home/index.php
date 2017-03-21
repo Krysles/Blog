@@ -1,7 +1,9 @@
 <?php $this->title = "Accueil" ?>
+
 <?php echo '<pre>'; ?>
 <?php print_r($_SESSION); ?>
 <?php echo '</pre>'; ?>
+
 <section id="home" class="naked">
     <div class="fullscreenbanner-container revolution">
         <div class="fullscreenbanner">
@@ -131,6 +133,9 @@
         <!-- /.box -->
     </section>
     <!-- /#contact -->
+    <?php if (isset($_SESSION['auth']) && !empty($_SESSION['auth'])) : ?>
+    <!-- Faire marque parge -->
+    <?php else : ?>
     <section id="register">
         <div class="box">
             <h2 class="section-title">Inscription</h2>
@@ -221,7 +226,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-row text-input-row password-field">
-                                    <label>Mot de passe</label>
+                                    <label>Mot de passe</label><a style="font-size: 13px;" class="pull-right" href="/home/lostpassword"><em>(mot de passe oublié ?)</em></a>
                                     <input type="password" name="password" class="text-input defaultText required" placeholder="15 caractères maximum"/>
                                     <?php if (isset($_SESSION['connexionErrors']['password'])) : ?>
                                         <p class="alert alert-danger"><?php echo $_SESSION['connexionErrors']['password']; ?></p>
@@ -241,6 +246,7 @@
         </div>
         <!-- /.box -->
     </section>
+    <?php endif; ?>
     <!-- /#connexion -->
     <footer class="footer box" style="margin-top: 0;">
         <p class="pull-left">© 2015 Lumos. All rights reserved. Theme by <a href="http://elemisfreebies.com">elemis</a>.</p>
