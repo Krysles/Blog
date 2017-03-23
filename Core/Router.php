@@ -3,11 +3,11 @@ namespace App\Core;
 
 class Router
 {
-    private static $environnement;
+    private static $environment;
 
-    public function __construct($environnement) { self::$environnement = $environnement; }
+    public function __construct($environment) { self::$environment = $environment; }
     
-    public static function getEnvironnement() { return self::$environnement; }
+    public static function getEnvironment() { return self::$environment; }
 
     public function run()
     {

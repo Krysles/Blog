@@ -4,5 +4,6 @@ namespace App;
 require 'Autoloader.php';
 Autoloader::register();
 
-$router = new \App\Core\Router('dev'); // dev or prod
+// Select environment 'dev' or 'prod' and create file in Config directory
+$router = new \App\Core\Router('dev'); 
 $router->run();

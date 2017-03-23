@@ -18,7 +18,7 @@ class Config
 
     private static function getParams() {
         if (self::$params == null) {
-            $pathFile = "Config/". Router::getEnvironnement() .".ini";
+            $pathFile = "Config/". Router::getEnvironment() .".ini";
             if (!file_exists($pathFile)) {
                 throw new \Exception("Aucun fichier de configuration trouvé");
             } else {
