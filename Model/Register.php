@@ -22,7 +22,7 @@ class Register extends \App\Core\Database
 
     public function isValid()
     {
-        $this->validator = new \App\Model\Validator();
+        $this->validator = new \App\Validator\ValidateUser();
         $this->validator->validLastname($this->user->getLastname());
         $this->validator->validFirstname($this->user->getFirstname());
         $this->validator->validEmail($this->user->getEmail());

@@ -22,7 +22,7 @@ class connexion extends \App\Core\Database
 
     public function isValid()
     {
-        $this->validator = new \App\Model\Validator();
+        $this->validator = new \App\Validator\ValidateUser();
         $this->validator->validEmail($this->user->getEmail());
         $this->validator->validPassword($this->user->getPassword());
         if (empty($this->validator->getErrors())) {
