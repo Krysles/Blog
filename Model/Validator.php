@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-class Validator extends Database
+class Validator extends \App\Core\Database
 {
     private $errors = array();
 

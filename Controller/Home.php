@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Controller;
+use App\Core\Controller;
 
 class Home extends Controller
 {
@@ -15,7 +15,7 @@ class Home extends Controller
 
     public function index($bookname)
     {
-        $this->websiteConfig = new \App\Model\WebsiteConfig();
+        $this->websiteConfig = new \App\Core\WebsiteConfig();
         $this->book = new \App\Model\Book();
         $config = $this->websiteConfig->getConfig();
         $book = $this->book->getTheLastBook();
@@ -96,5 +96,40 @@ class Home extends Controller
         $this->request->getSession()->setAttribut('flash', array('success' => 'Vous avez été déconnecté.'));
         header('Location: /');
         exit();
+    }
+
+    public function lostpassword()
+    {
+        if ($this->request->existParam('post', 'lostpassword')) {
+            $datasForm = $this->request->getParams('post');
+            $recovery = new \App\Model\Recovery();
+            $recovery->setUser($datasForm);
+            if ($recovery->isValid()) {
+                $recovery->recovery();
+                $this->request->getSession()->setAttribut('flash', $recovery->getMessage());
+                header('Location: /');
+                exit();
+            } else {
+                $this->request->getSession()->setAttribut('lostpasswordForm', $recovery->getUser());
+                $this->request->getSession()->setAttribut('lostpasswordErrors', $recovery->getValidator()->getErrors());
+                $this->request->getSession()->setAttribut('flash', $recovery->getMessage());
+                header('Location: /home/lostpassword/#lostpassword');
+                exit();
+            }
+            // on vérifie le formulaire
+                // on traite le formulaire
+                // on envoi le mail
+                // on redirige vers home/
+            // formulaire pas bon
+                // message erreur
+        }
+        //$this->websiteConfig = new \App\Model\WebsiteConfig();
+        //$this->book = new \App\Model\Book();
+        //$config = $this->websiteConfig->getConfig();
+        //$book = $this->book->getTheLastBook();
+        $this->generateView(array(
+            //'config' => $config,
+            //'book' => $book
+        ));
     }
 }

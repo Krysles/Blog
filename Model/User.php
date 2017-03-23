@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-class User extends Database
+class User extends \App\Core\Database
 {
     const BANNED = 0;
     const VISITOR = 10;
@@ -17,6 +17,8 @@ class User extends Database
     private $role;
     private $confirmToken;
     private $registDate;
+    private $resetToken;
+    private $resetDate;
 
     public function getId() { return $this->id; }
     public function getLastname() { return $this->lastname; }
@@ -27,6 +29,8 @@ class User extends Database
     public function getRole() { return $this->role; }
     public function getConfirmToken() { return $this->confirmToken; }
     public function getRegistDate() { return $this->registDate; }
+    public function getResetToken() { return $this->resetToken; }
+    public function getResetDate() { return $this->resetDate; }
 
     public function setId($id) { $this->id = $id; }
     public function setLastname($lastname) { $this->lastname = $lastname; }
@@ -37,6 +41,8 @@ class User extends Database
     public function setRole($role) { $this->role = $role; }
     public function setConfirmToken($confirmToken) { $this->confirmToken = $confirmToken; }
     public function setRegistDate($registDate) { $this->registDate = $registDate; }
+    public function setResetToken($resetToken) { $this->resetToken = $resetToken; }
+    public function setResetDate($resetDate) { $this->resetDate = $resetDate; }
     
     public function __construct()
     {
@@ -79,4 +85,13 @@ class User extends Database
         ));
     }
 
+    public function checkUser($params)
+    {
+        $sql = "SELECT * FROM user WHERE 1 = 1";
+        foreach ($params as $key => $value) {
+            $sql = $sql . " AND $key = :$key";
+        }
+        return $this->runRequest($sql, $params)->fetch(\PDO::FETCH_ASSOC);
+    }
+    
 }

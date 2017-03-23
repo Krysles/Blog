@@ -1,7 +1,9 @@
 <?php
 namespace App\Model;
 
-class Message extends Mailer
+use \App\Core\Config;
+
+class Message extends \App\Core\Mailer
 {
     private $user;
     private $from;
@@ -17,7 +19,7 @@ class Message extends Mailer
     function sendValidRegister()
     {
         $objet = "Inscription sur le blog Jean Forteroche";
-        $content = "Bonjour, afin de valider votre inscription sur le blog de Jean Forteroche, merci de cliquer sur ce lien -> <a href='http://jeanforteroche/index.php?controller=home&action=register&id=". $this->user->getId() ."&token=" . $this->user->getConfirmToken() . "'>confirmer mon adresse</a>";
+        $content = "Bonjour, afin de valider votre inscription sur le blog de Jean Forteroche, merci de cliquer sur ce lien -> <a href='http://" . $_SERVER['SERVER_NAME'] . "/index.php?controller=home&action=register&id=". $this->user->getId() ."&token=" . $this->user->getConfirmToken() . "'>confirmer mon adresse</a>";
         $this->sendEmail($objet, $this->from, $this->to, $content);
     }
 

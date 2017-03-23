@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-class connexion extends Database
+class connexion extends \App\Core\Database
 {
     private $user;
     private $connexion;
@@ -40,7 +40,7 @@ class connexion extends Database
                 $this->user->hydrate($this->getConnexion());
                 $this->user->setPassword(null);
                 $this->setMessage('success', 'Bienvenue '. $this->user->getFirstname() . ' ' . $this->user->getLastname());
-                $this->setMessage('success', 'Bienvenue '. $this->user->getFirstname() . ' ' . $this->user->getLastname());
+                //$this->setMessage('success', 'Bienvenue '. $this->user->getFirstname() . ' ' . $this->user->getLastname());
                 return true;
             } else {
                 $this->setMessage('danger', "Veuillez vérifier vos identifiants.");

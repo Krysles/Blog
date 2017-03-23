@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-class Book extends Database
+class Book extends \App\Core\Database
 {
     private function getBaseQuery()
     {

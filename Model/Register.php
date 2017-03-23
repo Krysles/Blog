@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-class Register extends Database
+class Register extends \App\Core\Database
 {
     private $user;
     private $register;
@@ -42,7 +42,7 @@ class Register extends Database
     {
         $this->user->setPassword(Services::hashPassword($this->user->getPassword()));
         $this->user->setConfirmPassword(null);
-        $this->user->setConfirmToken(Services::generateToken(60));
+        $this->user->setConfirmToken(Services::generateStr(60));
         $this->user->setRole(USER::VISITOR);
         $this->user->insertUser();
         $message = new \App\Model\Message($this->user);

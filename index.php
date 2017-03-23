@@ -1,10 +1,8 @@
 <?php
-
-
 namespace App;
 
 require 'Autoloader.php';
 Autoloader::register();
 
-$router = new Model\Router;
+$router = new \App\Core\Router;
 $router->run();
