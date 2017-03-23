@@ -3,6 +3,12 @@ namespace App\Core;
 
 class Router
 {
+    private static $environnement;
+
+    public function __construct($environnement) { self::$environnement = $environnement; }
+    
+    public static function getEnvironnement() { return self::$environnement; }
+
     public function run()
     {
         // mettre un try catch

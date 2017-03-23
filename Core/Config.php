@@ -18,10 +18,7 @@ class Config
 
     private static function getParams() {
         if (self::$params == null) {
-            $pathFile = "Config/dev.ini";
-            if (!file_exists($pathFile)) {
-                $pathFile = "Config/prod.ini";
-            }
+            $pathFile = "Config/". Router::getEnvironnement() .".ini";
             if (!file_exists($pathFile)) {
                 throw new \Exception("Aucun fichier de configuration trouvé");
             } else {
