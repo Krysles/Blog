@@ -1,14 +1,19 @@
 <?php
 namespace App\Model;
 
-class Register extends \App\Core\Database
+use \App\Core\Database;
+use \App\Model\User;
+use \App\Model\Message;
+use \App\Validator\ValidateUser;
+
+class Register extends Database
 {
     private $user;
     private $register;
     private $validator;
     private $message = array();
 
-    public function __construct() { $this->user = new \App\Model\User(); }
+    public function __construct() { $this->user = new User(); }
 
     public function getValidator() { return $this->validator; }
     
@@ -22,7 +27,7 @@ class Register extends \App\Core\Database
 
     public function isValid()
     {
-        $this->validator = new \App\Validator\ValidateUser();
+        $this->validator = new ValidateUser();
         $this->validator->validLastname($this->user->getLastname());
         $this->validator->validFirstname($this->user->getFirstname());
         $this->validator->validEmail($this->user->getEmail());
@@ -45,7 +50,7 @@ class Register extends \App\Core\Database
         $this->user->setConfirmToken(Services::generateStr(60));
         $this->user->setRole(USER::VISITOR);
         $this->user->insertUser();
-        $message = new \App\Model\Message($this->user);
+        $message = new Message($this->user);
         $message->sendValidRegister();
         $this->setMessage('success', "Un email de confirmation vient de vous êtes envoyé.");
     }
@@ -60,7 +65,7 @@ class Register extends \App\Core\Database
         }
     }
 
-    public function checkRegister($id, $token)
+    public function checkRegister($id, $token) // remplacer par checkUser de User (model)
     {
         $sql = 'SELECT id, lastname, firstname, email, role, confirmToken FROM user WHERE id = ? AND confirmToken = ?';
         $this->setRegister($this->runRequest($sql, array($id, $token))->fetch(\PDO::FETCH_ASSOC));
@@ -82,8 +87,16 @@ class Register extends \App\Core\Database
         $this->user->hydrate($this->register);
         $this->user->setConfirmToken(null);
         $this->user->setRole(USER::MEMBER);
-        $this->user->updateUser();
-        $message = new \App\Model\Message($this->user);
+        $date = new \DateTime();
+        $this->user->setRegistDate($date->format('Y-m-d H:i:s'));
+        //$this->user->xupdateUser(); // A SUPPRIMER
+        $this->user->updateUser(array(
+            'confirmToken' => $this->user->getConfirmToken(),
+            'role' => $this->user->getRole(),
+            'registDate' => $this->user->getRegistDate()
+        ), $this->user->getId());
+
+        $message = new Message($this->user);
         $message->sendConfirmRegister();
         $this->setMessage('success', "Votre compte a bien été validé.");
     }

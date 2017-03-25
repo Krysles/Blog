@@ -26,4 +26,13 @@ class Session
             throw new \Exception("Attribut absent.");
         }
     }
+    
+    public function deleteAttribut($name)
+    {
+        if ($this->existAttribut($name)) {
+            unset($_SESSION[$name]);
+        } else {
+            throw new \Exception("Attribut absent.");
+        }
+    }
 }

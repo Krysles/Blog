@@ -1,6 +1,8 @@
 <?php
 namespace App\Core;
 
+use \App\Core\View;
+
 abstract class Controller
 {
     private $action;

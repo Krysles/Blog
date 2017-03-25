@@ -1,6 +1,8 @@
 <?php
 namespace App\Core;
 
+use \App\Core\Request;
+
 class Router
 {
     private static $environment;
@@ -12,7 +14,7 @@ class Router
     public function run()
     {
         // mettre un try catch
-        $request = new \App\Core\Request($_GET, $_POST);
+        $request = new Request($_GET, $_POST);
         $controller = $this->createController($request);
         $action = $this->createAction($request);
         $bookname = $this->createBookname($request);

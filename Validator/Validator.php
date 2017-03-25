@@ -1,7 +1,9 @@
 <?php
 namespace App\Validator;
 
-abstract class Validator extends \App\Core\Database
+use \App\Core\Database;
+
+abstract class Validator extends Database
 {
     public function validNotEmpty($value)
     {

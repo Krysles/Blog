@@ -1,7 +1,9 @@
 <?php
 namespace App\Model;
 
-class User extends \App\Core\Database
+use \App\Core\Database;
+
+class User extends Database
 {
     const BANNED = 0;
     const VISITOR = 10;
@@ -75,14 +77,26 @@ class User extends \App\Core\Database
         $this->id = $this->getLastInsertId();
     }
     
-    public function updateUser()
+    public function xupdateUser() // A SUPPRIMER SI L'AUTRE FONCTIONNE
     {
-        $sql = "UPDATE user SET confirmToken = ?, role = ?, registDate = NOW() WHERE id = ?";
+        $sql = "UPDATE user SET confirmToken = ?, role = ?, registDate = ? WHERE id = ?";
         $this->runRequest($sql, array(
             $this->confirmToken,
             $this->role,
+            $this->registDate,
             $this->id
         ));
+    }
+
+    public function updateUser($params, $id)
+    {
+        $sql = "UPDATE user SET";
+        foreach ($params as $key => $value) {
+            $sql = $sql . " $key = :$key,";
+        }
+        $sql = substr($sql, 0, -1);
+        $sql = $sql . " WHERE id = $id";
+        $this->runRequest($sql, $params);
     }
 
     public function checkUser($params)
@@ -93,5 +107,4 @@ class User extends \App\Core\Database
         }
         return $this->runRequest($sql, $params)->fetch(\PDO::FETCH_ASSOC);
     }
-    
 }

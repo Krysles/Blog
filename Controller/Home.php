@@ -2,6 +2,11 @@
 namespace App\Controller;
 
 use App\Core\Controller;
+use \App\Model\Book;
+use \App\Model\Register;
+use \App\Model\Connexion;
+use \App\Model\Lostpassword;
+use \App\Model\Recovery;
 
 class Home extends Controller
 {
@@ -16,7 +21,7 @@ class Home extends Controller
     public function index($bookname)
     {
         $this->websiteConfig = new \App\Core\WebsiteConfig();
-        $this->book = new \App\Model\Book();
+        $this->book = new Book();
         $config = $this->websiteConfig->getConfig();
         $book = $this->book->getTheLastBook();
         $this->generateView(array(
@@ -29,7 +34,7 @@ class Home extends Controller
     {
         if ($this->request->existParam('post', 'register')) {
             $datasForm = $this->request->getParams('post');
-            $register = new \App\Model\Register();
+            $register = new Register();
             $register->setUser($datasForm);
             if ($register->isValid()) {
                 $register->register();
@@ -45,7 +50,7 @@ class Home extends Controller
             }
         }
         if ($this->request->existParam('get', 'token') && $this->request->existParam('get', 'id')) {
-            $register = new \App\Model\Register();
+            $register = new Register();
             $id = $this->request->getParam('get', 'id');
             $token = $this->request->getParam('get', 'token');
             if ($register->isConfirmed($id, $token)) {
@@ -67,7 +72,7 @@ class Home extends Controller
     {
         if ($this->request->existParam('post', 'connexion')) {
             $datasForm = $this->request->getParams('post');
-            $connexion = new \App\Model\Connexion();
+            $connexion = new Connexion();
             $connexion->setUser($datasForm);
             if ($connexion->isValid()) {
                 if ($connexion->connexion()) {
@@ -100,36 +105,73 @@ class Home extends Controller
 
     public function lostpassword()
     {
+        if (isset($_SESSION['auth']) && !empty($_SESSION['auth'])) { // A CHANGER EN OBJET
+            $this->request->getSession()->setAttribut('flash', array('danger' => "Vous n'avez pas les droits pour la page demandée."));
+            header('Location: /');
+            exit();
+        }
         if ($this->request->existParam('post', 'lostpassword')) {
             $datasForm = $this->request->getParams('post');
-            $recovery = new \App\Model\Recovery();
-            $recovery->setUser($datasForm);
-            if ($recovery->isValid()) {
-                $recovery->recovery();
-                $this->request->getSession()->setAttribut('flash', $recovery->getMessage());
+            $lostpassword = new Lostpassword();
+            $lostpassword->setUser($datasForm);
+            if ($lostpassword->isValid()) {
+                $lostpassword->lostpassword();
+                $this->request->getSession()->setAttribut('flash', $lostpassword->getMessage());
                 header('Location: /');
                 exit();
             } else {
-                $this->request->getSession()->setAttribut('lostpasswordForm', $recovery->getUser());
-                $this->request->getSession()->setAttribut('lostpasswordErrors', $recovery->getValidator()->getErrors());
-                $this->request->getSession()->setAttribut('flash', $recovery->getMessage());
+                $this->request->getSession()->setAttribut('lostpasswordForm', $lostpassword->getUser());
+                $this->request->getSession()->setAttribut('lostpasswordErrors', $lostpassword->getValidator()->getErrors());
+                $this->request->getSession()->setAttribut('flash', $lostpassword->getMessage());
                 header('Location: /home/lostpassword/#lostpassword');
                 exit();
             }
-            // on vérifie le formulaire
-                // on traite le formulaire
-                // on envoi le mail
-                // on redirige vers home/
-            // formulaire pas bon
-                // message erreur
         }
-        //$this->websiteConfig = new \App\Model\WebsiteConfig();
-        //$this->book = new \App\Model\Book();
-        //$config = $this->websiteConfig->getConfig();
-        //$book = $this->book->getTheLastBook();
-        $this->generateView(array(
-            //'config' => $config,
-            //'book' => $book
-        ));
+        if ($this->request->existParam('get', 'token') && $this->request->existParam('get', 'id')) {
+            $lostpassword = new Lostpassword();
+            $id = $this->request->getParam('get', 'id');
+            $token = $this->request->getParam('get', 'token');
+            if ($lostpassword->isConfirmed($id, $token)) {
+                $this->request->getSession()->setAttribut('recovery', $lostpassword->getLostpassword());
+                $this->request->getSession()->setAttribut('flash', $lostpassword->getMessage());
+                header('Location: /home/recovery');
+                exit();
+            } else {
+                $this->request->getSession()->setAttribut('flash', $lostpassword->getMessage());
+                header('Location: /');
+                exit();
+            }
+        }
+        $this->generateView();
+    }
+    
+    public function recovery()
+    {
+        if (!$this->request->getSession()->existAttribut('recovery'))
+        {
+            $this->request->getSession()->setAttribut('flash', array('danger' => "Vous n'avez pas les droits pour la page demandée."));
+            header('Location: /');
+            exit();
+        } else {
+            if ($this->request->existParam('post', 'recovery')) {
+                $datasForm = $this->request->getParams('post');
+                $recovery = new Recovery();
+                $recovery->setUser($datasForm);
+                if ($recovery->isValid()) {
+                    $recovery->setUser($this->request->getSession()->getAttribut('recovery'));
+                    $this->request->getSession()->deleteAttribut('recovery');
+                    $recovery->recovery();
+                    $this->request->getSession()->setAttribut('flash', $recovery->getMessage());
+                    header('Location: /');
+                    exit();
+                } else {
+                    $this->request->getSession()->setAttribut('recoveryErrors', $recovery->getValidator()->getErrors());
+                    $this->request->getSession()->setAttribut('flash', $recovery->getMessage());
+                    header('Location: /home/recovery#recovery');
+                    exit();
+                }
+            }
+        }
+        $this->generateView();
     }
 }

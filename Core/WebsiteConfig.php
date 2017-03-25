@@ -1,7 +1,9 @@
 <?php
 namespace App\Core;
 
-class WebsiteConfig extends \App\Core\Database
+use \App\Core\Database;
+
+class WebsiteConfig extends Database
 {
     public function getConfig()
     {

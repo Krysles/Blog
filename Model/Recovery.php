@@ -1,6 +1,10 @@
 <?php
 namespace App\Model;
 
+use \App\Validator\ValidateUser;
+use \App\Model\User;
+use \App\Model\Message;
+
 class Recovery
 {
     private $user;
@@ -8,7 +12,7 @@ class Recovery
     private $validator;
     private $message = array();
 
-    public function __construct() { $this->user = new \App\Model\User(); }
+    public function __construct() { $this->user = new User(); }
 
     public function getRecovery() { return $this->recovery; }
 
@@ -26,8 +30,9 @@ class Recovery
 
     public function isValid()
     {
-        $this->validator = new \App\Model\Validator();
-        $this->validator->validEmail($this->user->getEmail());
+        $this->validator = new ValidateUser();
+        $this->validator->validPassword($this->user->getPassword());
+        $this->validator->validPasswords($this->user->getPassword(), $this->user->getConfirmPassword());
 
         if (empty($this->validator->getErrors())) {
             return true;
@@ -39,21 +44,14 @@ class Recovery
 
     public function recovery()
     {
-        $this->setRecovery($this->user->checkUser(array('email' => $this->user->getEmail())));
-        if (!empty($this->getRecovery())) {
-
-            echo 'email ok';
-        } else {
-            $this->setMessage('danger', "EST CE QUE JE DIS SI EMAIL OK.");
-
-            echo 'email non ok';
-        }
-
-
-
-        $this->user->setConfirmToken(Services::generateStr(60));
-
-        print_r($this->getRecovery());
-        die();
+        $this->user->setPassword(Services::hashPassword($this->user->getConfirmPassword()));
+        $this->user->setConfirmPassword(NULL);
+        $this->user->updateUser(array(
+            'password' => $this->user->getPassword(),
+            'resetToken' => NULL
+        ), $this->user->getId());
+        $message = new Message($this->user);
+        $message->sendConfirmRecovery();
+        $this->setMessage('success', "Votre compte a bien été mis à jour.");
     }
 }

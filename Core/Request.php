@@ -1,6 +1,8 @@
 <?php
 namespace App\Core;
 
+use \App\Core\Session;
+
 class Request
 {
     private $params = array();
@@ -10,7 +12,7 @@ class Request
     {
         $this->params['get'] = $this->clean($get);
         $this->params['post'] = $this->clean($post);
-        $this->session = new \App\Core\Session();
+        $this->session = new Session();
     }
 
     public function getSession()

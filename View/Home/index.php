@@ -190,7 +190,6 @@
                                     <input type="hidden" name="role" class="text-input defaultText required" value="visitor" />
                                 </div>
                                 <div class="button-row pull-right tm31">
-                                    <!--<input type="submit" value="Inscription" name="submit" class="btn btn-submit bm0"/>-->
                                     <button type="submit" name="register" value="submit" class="btn btn-submit bm0">Inscription</button>
                                     <?php unset($_SESSION['registerForm']); ?>
                                     <?php unset($_SESSION['registerErrors']); ?>
