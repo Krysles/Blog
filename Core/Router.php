@@ -14,11 +14,16 @@ class Router
     public function run()
     {
         // mettre un try catch
-        $request = new Request($_GET, $_POST);
-        $controller = $this->createController($request);
-        $action = $this->createAction($request);
-        $bookname = $this->createBookname($request);
-        $controller->runAction($action, $bookname);
+        try {
+            $request = new Request($_GET, $_POST);
+            $controller = $this->createController($request);
+            $action = $this->createAction($request);
+            //$bookname = $this->createBookname($request);
+            $controller->runAction($action);
+        }
+        catch(\Exception $e) {
+            $this->error($e);
+        }
     }
 
     public function createController(Request $request)
@@ -41,20 +46,16 @@ class Router
 
     public function createAction(Request $request)
     {
-        $action = 'index';
+        $action = 'read';
         if ($request->existParam('get', 'action')) {
             $action = $request->getParam('get', 'action');
         }
         return $action;
     }
 
-    public function createBookname(Request $request)
+    private function error(\Exception $e)
     {
-        $bookname = 'the-last';
-        if ($request->existParam('get', 'bookname')) {
-            $bookname = $request->getParam('get', 'bookname');
-        }
-        return $bookname;
+        // ajouter vue erreur pour l'affichage d'une 404
+        echo $e->getMessage();
     }
-    // Créer la fonction erreur exec, creer et appeler la vue
 }

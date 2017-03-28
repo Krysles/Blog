@@ -50,6 +50,7 @@ class Register extends Database
         $this->user->setConfirmToken(Services::generateStr(60));
         $this->user->setRole(USER::VISITOR);
         $this->user->insertUser();
+        $this->user->setId($this->user->getLastInsertId());
         $message = new Message($this->user);
         $message->sendValidRegister();
         $this->setMessage('success', "Un email de confirmation vient de vous êtes envoyé.");
@@ -57,19 +58,15 @@ class Register extends Database
 
     public function isConfirmed($id, $token)
     {
-        if ($this->checkRegister($id, $token)) {
+        $this->setRegister($this->user->checkUser(array(
+            'id' => $id,
+            'confirmToken' => $token)));
+        if ($this->getRegister()) {
             return true;
         } else {
             $this->setMessage('danger', "Un problème a été rencontré contactez l'administrateur.");
             return false;
         }
-    }
-
-    public function checkRegister($id, $token) // remplacer par checkUser de User (model)
-    {
-        $sql = 'SELECT id, lastname, firstname, email, role, confirmToken FROM user WHERE id = ? AND confirmToken = ?';
-        $this->setRegister($this->runRequest($sql, array($id, $token))->fetch(\PDO::FETCH_ASSOC));
-        return $this->getRegister();
     }
 
     public function getRegister()
@@ -89,7 +86,6 @@ class Register extends Database
         $this->user->setRole(USER::MEMBER);
         $date = new \DateTime();
         $this->user->setRegistDate($date->format('Y-m-d H:i:s'));
-        //$this->user->xupdateUser(); // A SUPPRIMER
         $this->user->updateUser(array(
             'confirmToken' => $this->user->getConfirmToken(),
             'role' => $this->user->getRole(),

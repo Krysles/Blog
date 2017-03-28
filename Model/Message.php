@@ -20,7 +20,7 @@ class Message extends Mailer
     function sendValidRegister()
     {
         $objet = "Inscription sur le blog Jean Forteroche";
-        $content = "Bonjour, afin de valider votre inscription sur le blog de Jean Forteroche, merci de cliquer sur ce lien -> <a href='http://" . $_SERVER['SERVER_NAME'] . "/index.php?controller=home&action=register&id=". $this->user->getId() ."&token=" . $this->user->getConfirmToken() . "'>confirmer mon adresse</a>";
+        $content = "Bonjour, afin de valider votre inscription sur le blog de Jean Forteroche, merci de cliquer sur ce lien -> <a href='http://" . $_SERVER['SERVER_NAME'] . "/index.php?controller=register&id=". $this->user->getId() ."&token=" . $this->user->getConfirmToken() . "'>confirmer mon adresse</a>";
         $this->sendEmail($objet, $this->from, $this->to, $content);
     }
 
@@ -34,7 +34,7 @@ class Message extends Mailer
     function sendValidLostPassword()
     {
         $objet = "Perte de mot de passe sur le blog Jean Forteroche";
-        $content = "Bonjour, afin de valider votre demande d'accès et saisir un nouveau mot de passe, merci de cliquer sur ce lien -> <a href='http://" . $_SERVER['SERVER_NAME'] . "/index.php?controller=home&action=lostpassword&id=". $this->user->getId() ."&token=" . $this->user->getResetToken() . "'>récupérer mon accès</a>";
+        $content = "Bonjour, afin de valider votre demande d'accès et saisir un nouveau mot de passe, merci de cliquer sur ce lien -> <a href='http://" . $_SERVER['SERVER_NAME'] . "/index.php?controller=recovery&id=". $this->user->getId() ."&token=" . $this->user->getResetToken() . "'>récupérer mon accès</a>";
         $this->sendEmail($objet, $this->from, $this->to, $content);
     }
     

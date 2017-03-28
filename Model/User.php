@@ -74,18 +74,6 @@ class User extends Database
             $this->role,
             $this->confirmToken
         ));
-        $this->id = $this->getLastInsertId();
-    }
-    
-    public function xupdateUser() // A SUPPRIMER SI L'AUTRE FONCTIONNE
-    {
-        $sql = "UPDATE user SET confirmToken = ?, role = ?, registDate = ? WHERE id = ?";
-        $this->runRequest($sql, array(
-            $this->confirmToken,
-            $this->role,
-            $this->registDate,
-            $this->id
-        ));
     }
 
     public function updateUser($params, $id)

@@ -1,9 +1,5 @@
 <?php $this->title = "Accueil" ?>
 
-<?php echo '<pre>'; ?>
-<?php print_r($_SESSION); ?>
-<?php echo '</pre>'; ?>
-
 <section id="home" class="naked">
     <div class="fullscreenbanner-container revolution">
         <div class="fullscreenbanner">
@@ -54,6 +50,7 @@
         <!-- /.box -->
     </section>
     <!-- /#about -->
+    <!-- Ajout du portfolio présentant les livres -->
     <section id="contact">
         <div class="box">
             <h2 class="section-title">Contact</h2>
@@ -133,7 +130,7 @@
         <!-- /.box -->
     </section>
     <!-- /#contact -->
-    <?php if (isset($_SESSION['auth']) && !empty($_SESSION['auth'])) : ?>
+    <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
     <!-- Faire marque parge -->
     <?php else : ?>
     <section id="register">
@@ -142,7 +139,7 @@
             <div class="divide20"></div>
             <div class="form-container">
                 <div class="response alert alert-success"></div>
-                <form class="" action="/home/register" method="post">
+                <form class="" action="/register" method="post">
                     <fieldset>
                         <div class="row">
                             <div class="col-sm-6">
@@ -210,7 +207,7 @@
             <div class="divide20"></div>
             <div class="form-container">
                 <div class="response alert alert-success"></div>
-                <form class="" action="/home/connexion" method="post">
+                <form class="" action="/connexion" method="post">
                     <fieldset>
                         <div class="row">
                             <div class="col-sm-6">
@@ -225,14 +222,13 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-row text-input-row password-field">
-                                    <label>Mot de passe</label><a style="font-size: 13px;" class="pull-right" href="/home/lostpassword"><em>(mot de passe oublié ?)</em></a>
+                                    <label>Mot de passe</label><a style="font-size: 13px;" class="pull-right" href="/recovery"><em>(mot de passe oublié ?)</em></a>
                                     <input type="password" name="password" class="text-input defaultText required" placeholder="15 caractères maximum"/>
                                     <?php if (isset($_SESSION['connexionErrors']['password'])) : ?>
                                         <p class="alert alert-danger"><?php echo $_SESSION['connexionErrors']['password']; ?></p>
                                     <?php endif; ?>
                                 </div>
                                 <div class="button-row pull-right tm31">
-                                    <!--<input type="submit" value="Inscription" name="submit" class="btn btn-submit bm0"/>-->
                                     <button type="submit" name="connexion" value="submit" class="btn btn-submit bm0">Connexion</button>
                                     <?php unset($_SESSION['connexionErrors']); ?>
                                 </div>
