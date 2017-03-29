@@ -6,19 +6,23 @@ use App\Model\User;
 
 class Page extends Controller
 {
-    protected $updatemin = User::MEMBER;
+    protected $updatemin = User::ADMIN;
     protected $updatemax = User::ADMIN;
     protected $deletemin = User::ADMIN;
     protected $deletemax = User::ADMIN;
 
     public function read()
     {
-        die('je suis read en visitor');
-        /*
+
         $book = new \App\Model\Book();
+        /*echo '<pre>';
+        print_r($book->getTickets());
+        echo '</pre>';
+        die();*/
         $this->generateView(array(
-            'book' => $book->getTheLastBook()
-        ));*/
+            'tickets' => $book->getTickets(),
+            'nbPage' => '4'
+        ));
     }
 
     public function update()

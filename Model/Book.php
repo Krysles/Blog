@@ -23,4 +23,11 @@ class Book extends Database
         $theLastBook = $this->runRequest($sql)->fetch();
         return $theLastBook;
     }
+    
+    public function getTickets()
+    {
+        $sql = "SELECT t.number number, t.title title, t.content content, t.publish publish, t.date date, t.img_url url, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.publish = 1 ORDER BY t.number DESC";
+        $tickets = $this->runRequest($sql)->fetchAll(\PDO::FETCH_ASSOC);
+        return $tickets;
+    }
 }
