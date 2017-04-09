@@ -1,27 +1,29 @@
 <?php
 namespace App\Core;
 
-use \App\Core\Request;
-
 class Router
 {
     private static $environment;
 
-    public function __construct($environment) { self::$environment = $environment; }
-    
-    public static function getEnvironment() { return self::$environment; }
+    public function __construct($environment)
+    {
+        self::$environment = $environment;
+    }
+
+    public static function getEnvironment()
+    {
+        return self::$environment;
+    }
 
     public function run()
     {
         // mettre un try catch
         try {
-            $request = new Request($_GET, $_POST);
+            $request = new \App\Core\Request($_GET, $_POST, $_FILES);
             $controller = $this->createController($request);
             $action = $this->createAction($request);
-            //$bookname = $this->createBookname($request);
             $controller->runAction($action);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->error($e);
         }
     }

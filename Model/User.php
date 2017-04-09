@@ -65,14 +65,14 @@ class User extends Database
     
     public function insertUser()
     {
-        $sql = 'INSERT INTO user SET lastname = ?, firstname = ?, password = ?, email = ?, role = ?, confirmToken = ?';
+        $sql = 'INSERT INTO user SET lastname = :lastname, firstname = :firstname, password = :password, email = :email, role = :role, confirmToken = :confirmToken';
         $this->runRequest($sql, array(
-            $this->lastname,
-            $this->firstname,
-            $this->password,
-            $this->email,
-            $this->role,
-            $this->confirmToken
+            'lastname' => $this->lastname,
+            'firstname' => $this->firstname,
+            'password' => $this->password,
+            'email' => $this->email,
+            'role' => $this->role,
+            'confirmToken' => $this->confirmToken
         ));
     }
 

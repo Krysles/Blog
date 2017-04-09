@@ -21,7 +21,7 @@ abstract class Controller
     {
         if (method_exists($this, $action)) {
             $this->action = $action;
-            $this->index($this->action);
+            $this->action($this->action);
         } else {
             $this->request->getSession()->setAttribut('flash', array('danger' => "L'action demandée n'existe pas."));
             header('Location: /');
@@ -29,7 +29,7 @@ abstract class Controller
         }
     }
 
-    public function index($action) {
+    public function action($action) {
         $this->action = $action;
         if (($this->{$action.'max'} >= $this->request->getSession()->getAttribut('auth')->getRole()) && ($this->{$action.'min'} <= $this->request->getSession()->getAttribut('auth')->getRole())) {
             $this->{$this->action}();

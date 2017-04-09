@@ -8,10 +8,11 @@ class Request
     private $params = array();
     private $session;
 
-    public function __construct($get, $post)
+    public function __construct($get, $post, $files)
     {
         $this->params['get'] = $this->clean($get);
         $this->params['post'] = $this->clean($post);
+        $this->params['files'] = $files;
         $this->session = new Session();
     }
 
@@ -56,6 +57,24 @@ class Request
         }
     }
 
+    public function deleteParam($method, $name)
+    {
+        if ($this->existParam($method, $name)) {
+            unset($this->param[$method][$name]);
+        } else {
+            throw new \Exception("Le paramètre $name de la méthode $method n'exist pas.");
+        }
+    }
+
+    public function deleteParams($method)
+    {
+        if ($this->existParams($method)) {
+            unset($this->params[$method]);
+        } else {
+            throw new \Exception("La méthode $method n'exist pas.");
+        }
+    }
+    
     public function clean($values)
     {
         $cleanValues = array();

@@ -13,7 +13,7 @@ class Connexion extends \App\Core\Controller
                 if ($connexion->connexion()) {
                     $this->request->getSession()->setAttribut('auth', $connexion->getUser());
                     $this->request->getSession()->setAttribut('flash', $connexion->getMessage());
-                    header('Location: /');
+                    header('Location: /page');
                     exit();
                 }
                 $this->request->getSession()->setAttribut('flash', $connexion->getMessage());

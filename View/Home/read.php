@@ -37,7 +37,7 @@
                 </div>
                 <!-- /column -->
                 <div class="col-md-7 col-md-pull-5 col-sm-12">
-                    <h2 class="section-title"><?php echo $book->title; ?></h2>
+                    <h2 class="section-title"><a href="/page"><?php echo $book->title; ?></a></h2>
                     <p class="lead"><?php echo $book->subtitle; ?></p>
                     <p><?php echo $book->summary; ?></p>
                     <p class="text-right"><?php echo $book->firstname . ' ' . $book->lastname; ?></p>
@@ -84,15 +84,15 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-row text-input-row name-field">
-                                    <label>Name</label>
-                                    <input type="text" name="name" class="text-input defaultText required"/>
+                                    <label>Nom</label>
+                                    <input type="text" name="name" class="text-input defaultText required" />
                                 </div>
                                 <div class="form-row text-input-row email-field">
                                     <label>Email</label>
                                     <input type="text" name="email" class="text-input defaultText required email"/>
                                 </div>
                                 <div class="form-row text-input-row subject-field">
-                                    <label>Subject</label>
+                                    <label>Sujet</label>
                                     <input type="text" name="subject" class="text-input defaultText"/>
                                 </div>
                             </div>

@@ -1,47 +1,36 @@
 <?php
 namespace App\Controller;
 
-use \App\Core\Controller;
-use App\Model\User;
-
-class Page extends Controller
+class Page extends \App\Core\Controller
 {
-    protected $updatemin = User::ADMIN;
-    protected $updatemax = User::ADMIN;
-    protected $deletemin = User::ADMIN;
-    protected $deletemax = User::ADMIN;
-
     public function read()
     {
+        $page = new \App\Model\Page();
+        if ($this->request->existParam('get', 'id')) {
+            if (!$page->isValid($this->request->getParam('get', 'id'))) {
+                $this->request->getSession()->setAttribut('flash', $page->getMessage());
+                $page->setPage(1);
+            }
+        } else {
+            $page->setPage(1);
+        }
+        
+        $title = $page->getTitle();
+        
+        $tickets = $page->getTickets();
 
-        $book = new \App\Model\Book();
-        /*echo '<pre>';
-        print_r($book->getTickets());
-        echo '</pre>';
-        die();*/
+        $ticketsNoPublish = $page->getBook()->getTicketsNoPublish();
+
+        $lastTickets = $page->getBook()->getTickets(0, 10);
+
+        $paginator = new \App\Model\Paginator($page);
+
         $this->generateView(array(
-            'tickets' => $book->getTickets(),
-            'nbPage' => '4'
+            'title' => $title,
+            'tickets' => $tickets,
+            'ticketsNoPublish' => $ticketsNoPublish,
+            'lastTickets' => $lastTickets,
+            'paginator' => $paginator->generate()
         ));
-    }
-
-    public function update()
-    {
-        die('je suis update en member');
-        /*
-        $book = new \App\Model\Book();
-        $this->generateView(array(
-            'book' => $book->getTheLastBook()
-        ));*/
-    }
-
-    public function delete()
-    {
-        die('je suis delete en admin');
-        /*
-        $book = new \App\Model\Book();
-        $this->generateView(array(
-            'book' => $book->getTheLastBook()
-        ));*/
     }
 }

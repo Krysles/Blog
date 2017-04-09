@@ -1,7 +1,9 @@
 <?php
 namespace App\Controller;
 
-class Register extends \App\Core\Controller
+use App\Core\Controller;
+
+class Register extends Controller
 {
     public function read()
     {

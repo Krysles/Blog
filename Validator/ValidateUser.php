@@ -58,8 +58,10 @@ class ValidateUser extends Validator
 
     private function checkEmail($email)
     {
-        $sql = 'SELECT COUNT(email) AS total FROM user WHERE email = ?';
-        if ($this->runRequest($sql, array($email))->fetch()->total != 0) {
+        $sql = 'SELECT COUNT(email) AS total FROM user WHERE email = :email';
+        if ($this->runRequest($sql, array(
+                ':email' => $email
+            ))->fetch()->total != 0) {
             return true;
         } else {
             return false;

@@ -13,4 +13,10 @@ class Services
         $alphabet = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN";
         return substr(str_shuffle(str_repeat($alphabet, $length)), 0, $length);
     }
+
+    static public function getExtension($file)
+    {
+        $file = new \SplFileInfo($file);
+        return $file->getExtension();
+    }
 }

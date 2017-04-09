@@ -60,8 +60,11 @@ class connexion extends Database
     {
         $sql = "SELECT id, lastname, firstname, password, registDate, role
                 FROM user
-                WHERE email = ? AND role >= ? AND confirmToken IS NULL AND registDate IS NOT NULL AND resetToken IS NULL";
-        $this->setConnexion($this->runRequest($sql, array($this->user->getEmail(), User::MEMBER))->fetch(\PDO::FETCH_ASSOC));
+                WHERE email = :email AND role >= :role AND confirmToken IS NULL AND registDate IS NOT NULL AND resetToken IS NULL";
+        $this->setConnexion($this->runRequest($sql, array(
+            ':email' => $this->user->getEmail(),
+            ':role' => User::MEMBER
+        ))->fetch(\PDO::FETCH_ASSOC));
         return $this->getConnexion();
     }
 
