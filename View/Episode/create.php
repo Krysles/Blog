@@ -37,8 +37,18 @@
                             <?php endif; ?>
                         </div>
                         <div class="form-row text-input-row publish-field">
-                            <label>Publié</label>
-                            <input type="checkbox" name="publish" value="1" class="text-input defaultText"/>
+                            <?php if (isset($_SESSION['ticketManagerForm'])) : ?>
+                                <?php if ($_SESSION['ticketManagerForm']->getPublish() == 1) : ?>
+                                    <input type="radio" name="publish" value="1" checked="checked" id="radiopublish" /><label for="radiopublish">Publié</label><br />
+                                    <input type="radio" name="publish" value="0" id="radionopublish" /><label for="radionopublish">Non Publié</label>
+                                <?php else : ?>
+                                    <input type="radio" name="publish" value="1" id="radiopublish" /><label for="radiopublish">Publié</label><br />
+                                    <input type="radio" name="publish" value="0" checked="checked" id="radionopublish" /><label for="radionopublish">Non Publié</label>
+                                <?php endif; ?>
+                            <?php else : ?>
+                                    <input type="radio" name="publish" value="1" id="radiopublish" /><label for="radiopublish">Publié</label><br />
+                                    <input type="radio" name="publish" value="0" checked="checked" id="radionopublish" /><label for="radionopublish">Non Publié</label>
+                            <?php endif; ?>
                         </div>
                         <div class="button-row tm31">
                             <button type="submit" name="submitbtn" value="submit" class="btn btn-submit bm0">Enregistrer</button>

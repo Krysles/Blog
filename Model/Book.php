@@ -25,7 +25,7 @@ class Book extends Database
 
     public function getTickets($start, $nbEntriesPerPage)
     {
-        $sql = "SELECT t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl url, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.publish = 1 ORDER BY t.number DESC LIMIT :start, :nbEntriesPerPage";
+        $sql = "SELECT t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl imgUrl, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.publish = 1 ORDER BY t.number DESC LIMIT :start, :nbEntriesPerPage";
         $tickets = $this->runRequest($sql, array(
             ':start' => $start,
             ':nbEntriesPerPage' => $nbEntriesPerPage
@@ -35,18 +35,9 @@ class Book extends Database
 
     public function getTicketsNoPublish()
     {
-        $sql = "SELECT t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl url, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.publish = 0 ORDER BY t.number DESC";
+        $sql = "SELECT t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl imgUrl, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.publish = 0 ORDER BY t.number DESC";
         $tickets = $this->runRequest($sql)->fetchAll(\PDO::FETCH_ASSOC);
         return $tickets;
-    }
-    
-    public function getTicket($number)
-    {
-        $sql = "SELECT t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl url, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.number = :number";
-        $ticket = $this->runRequest($sql, array(
-            ':number' => $number
-        ))->fetch(\PDO::FETCH_ASSOC);
-        return $ticket;
     }
 
     public function getTicketNumbers()

@@ -1,12 +1,13 @@
+<?php $this->title = $ticket['title']; ?>
+
 <div class="container inner">
     <div class="single blog row">
         <div class="col-md-8 col-sm-12 content">
             <div class="blog-posts">
-
                 <div class="post box">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h2 class="post-title"><a href="/episode/<?php echo $ticket['number']; ?>"><?php echo $ticket['title'] ?></a></h2>
+                            <h2 class="post-title"><?php echo $ticket['title']; ?></h2>
                         </div>
                     </div>
                     <div class="row">
@@ -15,11 +16,15 @@
                                 <span class="category"><?php echo $ticket['firstname'] . ' ' . $ticket['lastname']; ?></span>
                                 <span class="date"><?php echo $ticket['date'] ?></span>
                                 <span class="comments"><a href="#">8 <i class="icon-chat-1"></i></a></span>
-                                <span class="publish"><?php echo $ticket['publish'] . 'publié ou non'; ?></span>
+                                <?php if ($ticket['publish'] == 0) : ?>
+                                <span class="publish">Non publié</span>
+                                <?php endif; ?>
                             </div>
+                            <?php if (!empty($ticket['imgUrl'])) : ?>
                             <figure class="frame pull-right" style="width: 30%; margin-left: 20px; margin-bottom: 20px;">
-                                <img src="<?php echo $ticket['url']; ?>" alt=""/>
+                                <img src="<?php echo $ticket['imgUrl']; ?>" alt=""/>
                             </figure>
+                            <?php endif; ?>
                             <p><?php echo htmlspecialchars_decode($ticket['content']); ?></p>
                         </div>
                         <!-- /column -->
@@ -199,10 +204,9 @@
                 <ul class="tag-list">
                     <li><a href="#" class="btn">Commenter l'épisode</a></li>
                     <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::ADMIN) : ?>
-                    <li><a href="/episode/0/publish" class="btn">Publier l'épisode</a></li>
-                    <li><a href="/episode/create" class="btn">Créer un nouvel épisode</a></li>
-                    <li><a href="/episode/2/update" class="btn">Editer l'épisode</a></li>
-                    <li><a href="/episode/3/delete" class="btn">Supprimer l'épisode</a></li>
+                    <li><a href="<?php echo $ticket['number']; ?>/update" class="btn">Editer l'épisode</a></li>
+                    <li><a href="/episode/create" class="btn">Créer un épisode</a></li>
+                    <li><a href="<?php echo $ticket['number']; ?>/delete" class="btn">Supprimer l'épisode</a></li>
                     <?php endif; ?>
                 </ul>
                 <!-- /.tag-list -->

@@ -44,7 +44,7 @@ class connexion extends Database
             if (password_verify($this->user->getPassword(), $this->connexion['password'])) {
                 $this->user->hydrate($this->getConnexion());
                 $this->user->setPassword(null);
-                $this->setMessage('success', 'Bienvenue '. $this->user->getFirstname() . ' ' . $this->user->getLastname());
+                $this->setMessage('success', 'Bienvenue '. ucfirst($this->user->getFirstname()) . ' ' . ucfirst($this->user->getLastname()));
                 return true;
             } else {
                 $this->setMessage('danger', "Identifiant ou mot de passe incorrect.");

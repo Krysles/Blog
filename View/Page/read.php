@@ -1,4 +1,4 @@
-<?php $this->title = $title ?>
+<?php $this->title = $title; ?>
 
 <div class="container inner">
     <div class="blog list-view row">
@@ -25,8 +25,8 @@
                                 <p><a href="/episode/<?php echo $ticket['number']; ?>"><b>lire la suite</b></a></p>
                             </div>
                             <!-- /column -->
+                            <?php if (!empty($ticket['imgUrl'])) : ?>
                             <div class="col-sm-4">
-
                                 <figure class="frame">
                                     <a href="/episode/<?php echo $ticket['number']; ?>">
                                         <div class="text-overlay">
@@ -34,10 +34,11 @@
                                                 <span>Lire la suite</span>
                                             </div>
                                         </div>
-                                        <img src="<?php echo $ticket['url']; ?>" alt=""/>
+                                        <img src="<?php echo $ticket['imgUrl']; ?>" alt=""/>
                                     </a>
                                 </figure>
                             </div>
+                            <?php endif; ?>
 
                             <!-- /column -->
                         </div>

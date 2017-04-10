@@ -57,8 +57,8 @@ class Lostpassword
                 'resetToken' => $this->user->getResetToken(),
                 'resetDate' => $this->user->getResetDate()
             ), $this->user->getId());
-            $message = new Message($this->user);
-            $message->sendValidLostPassword();
+            $message = new Message();
+            $message->sendValidLostPassword($this->user);
         }
         $this->setMessage('success', "Le traitement de votre demande est en cours.");
     }

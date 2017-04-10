@@ -77,4 +77,28 @@ class Ticket extends Database
             ':userId' => $userId
         ));
     }
+
+    public function update($userId)
+    {
+        $sql = "UPDATE ticket SET number = :number, title = :title, content = :content, imgUrl = :imgUrl, publish = :publish, date = NOW(), book_id = :bookId, user_id = :userId WHERE id = :id";
+        $this->runRequest($sql, array(
+            ':number' => $this->getNumber(),
+            ':title' => $this->getTitle(),
+            ':content' => $this->getContent(),
+            ':imgUrl' => $this->getImgUrl(),
+            ':publish' => $this->getPublish(),
+            ':bookId' => 1,
+            ':userId' => $userId,
+            'id' => $this->getId()
+        ));
+    }
+
+    public function getTicket($number)
+    {
+        $sql = "SELECT t.id id, t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl imgUrl, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.number = :number";
+        $ticket = $this->runRequest($sql, array(
+            ':number' => $number
+        ))->fetch(\PDO::FETCH_ASSOC);
+        return $ticket;
+    }
 }

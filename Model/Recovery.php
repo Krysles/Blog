@@ -50,8 +50,8 @@ class Recovery
             'password' => $this->user->getPassword(),
             'resetToken' => NULL
         ), $this->user->getId());
-        $message = new Message($this->user);
-        $message->sendConfirmRecovery();
+        $message = new Message();
+        $message->sendConfirmRecovery($this->user);
         $this->setMessage('success', "Votre compte a bien été mis à jour.");
     }
 }

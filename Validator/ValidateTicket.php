@@ -22,14 +22,26 @@ class ValidateTicket extends Validator
     
     public function validImage($image)
     {
-        if (!$this->validValue($image->getError(), 0)) {
-            $this->setErrors('image', "Une erreur a été rencontré lors de l'envoi du fichier.");
-        } elseif (!$this->validImageFormat($image->getType())) {
-            $this->setErrors('image', "Le fichier attendu n'est pas au bon format.");
-        } elseif (!$this->validSize($image->getSize(), self::MAXSIZE)) {
+        if ($this->validValue($image->getError(), 0)) {
+            if (!$this->validImageFormat($image->getType())) {
+                $this->setErrors('image', "Le fichier attendu n'est pas au bon format.");
+            } elseif (!$this->validSize($image->getSize(), self::MAXSIZE)) {
+                $this->setErrors('image', "La taille du fichier est trop importante.");
+            } elseif (!$this->validExtension($image->getName())) {
+                $this->setErrors('image', "L'extension du fichier est incorrecte.");
+            }
+        } elseif ($this->validValue($image->getError(), 1)) {
             $this->setErrors('image', "La taille du fichier est trop importante.");
-        } elseif (!$this->validExtension($image->getName())) {
-            $this->setErrors('image', "L'extension du fichier est incorrecte.");
+        } elseif ($this->validValue($image->getError(), 2)) {
+            $this->setErrors('image', "La taille du fichier est trop importante.");
+        } elseif ($this->validValue($image->getError(), 3)) {
+            $this->setErrors('image', "Le fichier a été partiellement téléchargé.");
+        } elseif ($this->validValue($image->getError(), 6)) {
+            $this->setErrors('image', "Le dossier temporaire est manquant.");
+        } elseif ($this->validValue($image->getError(), 7)) {
+            $this->setErrors('image', "Erreur lors de l'écriture du fichier sur le disque.");
+        } elseif ($this->validValue($image->getError(), 8)) {
+            $this->setErrors('image', "L'envoi du fichier a été arrêté.");
         }
     }
     

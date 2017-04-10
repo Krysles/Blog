@@ -54,73 +54,53 @@
     <section id="contact">
         <div class="box">
             <h2 class="section-title">Contact</h2>
-            <p>C'est ici que l'on va pouvoir se connecter pour ajouter des commentaires. Il faut qu'après la connexion cette section disparaisse et change avec un bouton de
-                déconnexion. Il ne faut pas oublier d'ajouter une option pour s'inscrire.</p>
+            <p>Pour contacter l'auteur, veuillez lui laisser un message en utilisant le formulaire ci-dessous.</p>
             <div class="divide20"></div>
-            <div class="row text-center services-2">
-                <div class="col-md-3 col-sm-6"><i class="budicon-map"></i>
-                    <p>Moon Street Light Avenue <br/>
-                        14/05 Jupiter, JP 80630</p>
-                </div>
-                <div class="col-md-3 col-sm-6"><i class="budicon-telephone"></i>
-                    <p>00 (123) 456 78 90 <br/>
-                        00 (987) 654 32 10 </p>
-                </div>
-                <div class="col-md-3 col-sm-6"><i class="budicon-mobile"></i>
-                    <p>00 (123) 456 78 90 <br/>
-                        00 (987) 654 32 10 </p>
-                </div>
-                <div class="col-md-3 col-sm-6"><i class="budicon-mail"></i>
-                    <p><a class="nocolor" href="mailto:#">manager@email.com</a> <br/>
-                        <a class="nocolor" href="mailto:#">asistant@email.com</a></p>
-                </div>
-            </div>
-            <!-- /.services-2 -->
-            <div class="divide30"></div>
             <div class="form-container">
                 <div class="response alert alert-success"></div>
-                <form class="formssssssssss" action="contact/form-handler.php" method="post">
+                <form class="" action="/contact" method="post">
                     <fieldset>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-row text-input-row name-field">
                                     <label>Nom</label>
-                                    <input type="text" name="name" class="text-input defaultText required" />
+                                    <input type="text" name="name" value="<?php if (isset($_SESSION['contactForm'])) : echo $_SESSION['contactForm']['name']; endif; ?>" class="text-input defaultText required" placeholder="Entrez votre nom"/>
+                                    <?php if (isset($_SESSION['contactErrors']['name'])) : ?>
+                                        <p class="alert alert-danger"><?php echo $_SESSION['contactErrors']['name']; ?></p>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="form-row text-input-row email-field">
                                     <label>Email</label>
-                                    <input type="text" name="email" class="text-input defaultText required email"/>
+                                    <!-- mettre email après les tests -->
+                                    <input type="text" name="email" value="<?php if (isset($_SESSION['contactForm'])) : echo $_SESSION['contactForm']['email']; endif; ?>" class="text-input defaultText required email" placeholder="Entrez votre adresse email"/>
+                                    <?php if (isset($_SESSION['contactErrors']['email'])) : ?>
+                                        <p class="alert alert-danger"><?php echo $_SESSION['contactErrors']['email']; ?></p>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="form-row text-input-row subject-field">
                                     <label>Sujet</label>
-                                    <input type="text" name="subject" class="text-input defaultText"/>
+                                    <input type="text" name="subject" value="<?php if (isset($_SESSION['contactForm'])) : echo $_SESSION['contactForm']['subject']; endif; ?>" class="text-input defaultText" placeholder="Entrez le sujet du contact"/>
+                                    <?php if (isset($_SESSION['contactErrors']['subject'])) : ?>
+                                        <p class="alert alert-danger"><?php echo $_SESSION['contactErrors']['subject']; ?></p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="col-sm-6 lp5">
                                 <div class="form-row text-area-row">
                                     <label>Message</label>
-                                    <textarea name="message" class="text-area required"></textarea>
-                                </div>
-                                <div class="form-row hidden-row">
-                                    <input type="hidden" name="hidden" value=""/>
-                                </div>
-                                <div class="nocomment">
-                                    <label for="nocomment">Leave This Field Empty</label>
-                                    <input id="nocomment" value="" name="nocomment"/>
+                                    <textarea name="message" class="text-area required" placeholder="Entrez le message"><?php if (isset($_SESSION['contactForm'])) : echo $_SESSION['contactForm']['message']; endif; ?></textarea>
+                                    <?php if (isset($_SESSION['contactErrors']['message'])) : ?>
+                                        <p class="alert alert-danger"><?php echo $_SESSION['contactErrors']['message']; ?></p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <div class="button-row pull-right">
-                                    <input type="submit" value="Send Message" name="submit" class="btn btn-submit bm0"/>
+                                    <input type="submit" value="Envoyer" name="contact" class="btn btn-submit bm0"/>
+                                    <?php unset($_SESSION['contactForm']); ?>
+                                    <?php unset($_SESSION['contactErrors']); ?>
                                 </div>
                             </div>
-                            <div class="col-sm-6 lp5">
-                                <div class="button-row pull-left">
-                                    <input type="reset" value="Clear Message" name="reset" class="btn btn-submit bm0"/>
-                                </div>
-                            </div>
-                            <input type="hidden" name="v_error" id="v-error" value="Required"/>
-                            <input type="hidden" name="v_email" id="v-email" value="Enter a valid email"/>
                         </div>
                     </fieldset>
                 </form>

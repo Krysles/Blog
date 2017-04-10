@@ -3,6 +3,8 @@ namespace App\Model;
 
 class TicketManager
 {
+    const IMGDIRECTORY = 'style/images/episodes/';
+
     private $ticket;
     private $validator;
     private $message = array();
@@ -17,7 +19,7 @@ class TicketManager
         return $this->ticket;
     }
 
-    public function setTicket($ticket, $image)
+    public function setTicket($ticket, $image = array())
     {
         $this->ticket->hydrate($ticket);
         $this->ticket->setImage($image);
@@ -55,38 +57,61 @@ class TicketManager
 
     public function insert($user)
     {
+        if ($this->ticket->getImage()->getError() == 0) {
 
-        $bookId = $this->ticket->getLast('book', 'id')->number;
+            $baseFileName = Services::createBaseFilename(1, $this->ticket->getNextId('ticket')['Auto_increment']);
+            $extFileName = Services::getExtension($this->ticket->getImage()->getName());
 
-        $nextTicketId = $this->ticket->getNextId('ticket')['Auto_increment'];
+            $fileName = $baseFileName . '.' . strtolower($extFileName);
 
+            Services::createDirectory(self::IMGDIRECTORY);
 
-        // création du nouveau nom de fichier
-        $bookId = str_pad($bookId, 3, "0", STR_PAD_LEFT);
-        $nextTicketId = str_pad($nextTicketId, 5, "0", STR_PAD_LEFT);
-        $baseFileName = $bookId . $nextTicketId;
-        $extFileName = Services::getExtension($this->ticket->getImage()->getName());
-        $fileName = $baseFileName . '.' . strtolower($extFileName);
+            $url = self::IMGDIRECTORY . $fileName;
 
-        // récupération du fichier tmp
-        $tmp_name = $this->ticket->getImage()->getTmp_name();
+            $tmp_name = $this->ticket->getImage()->getTmp_name();
+            move_uploaded_file($tmp_name, $url);
 
-        // création du répertoire si inexistant
-        $rep = 'style/images/episodes/';
-        if (!is_dir($rep)) {
-            if (!mkdir($rep, 0755)) {
-                throw new \Exception("Erreur : le répertoire cible ne peut-être créé ! Vérifiez que vous diposiez des droits suffisants pour le faire ou créez le manuellement !");
-            }
+            $this->ticket->setImgUrl('/' . $url);
+
         }
-        $url = $rep . $fileName;
-        move_uploaded_file($tmp_name, $url);
-
-        $this->ticket->setImgUrl('/' . $url);
-
         $this->ticket->setNumber($this->ticket->getLast('ticket', 'number')->number + 1);
-
         $this->ticket->insert($user->getId());
-        
+
         $this->setMessage('success', "L'épisode a bien été créé.");
+    }
+
+    public function update($user)
+    {
+        if ($this->ticket->getImage()->getError() == 0) {
+            
+            Services::deleteFile(substr($this->getTicket()->getImgUrl(), 1));
+
+            $baseFileName = Services::createBaseFilename(1, $this->getTicket()->getId());
+            $extFileName = Services::getExtension($this->ticket->getImage()->getName());
+
+            $fileName = $baseFileName . '.' . strtolower($extFileName);
+
+            Services::createDirectory(self::IMGDIRECTORY);
+
+
+            $url = self::IMGDIRECTORY . $fileName;
+
+            $tmp_name = $this->ticket->getImage()->getTmp_name();
+            move_uploaded_file($tmp_name, $url);
+
+            $this->ticket->setImgUrl('/' . $url);
+
+        }
+        $this->ticket->update($user->getId());
+
+        $this->setMessage('success', "L'épisode a bien été mis à jour.");
+    }
+    
+    public function deleteimage($user)
+    {
+        Services::deleteFile(substr($this->getTicket()->getImgUrl(), 1));
+        $this->ticket->setImgUrl(null);
+        $this->ticket->update($user->getId());
+        $this->setMessage('success', "L'image a bien été supprimé.");
     }
 }

@@ -51,8 +51,9 @@ class Register extends Database
         $this->user->setRole(USER::VISITOR);
         $this->user->insertUser();
         $this->user->setId($this->user->getLastInsertId());
-        $message = new Message($this->user);
-        $message->sendValidRegister();
+        
+        $message = new Message();
+        $message->sendValidRegister($this->user);
         $this->setMessage('success', "Un email de confirmation vient de vous êtes envoyé.");
     }
 
@@ -92,8 +93,8 @@ class Register extends Database
             'registDate' => $this->user->getRegistDate()
         ), $this->user->getId());
 
-        $message = new Message($this->user);
-        $message->sendConfirmRegister();
+        $message = new Message();
+        $message->sendConfirmRegister($this->user);
         $this->setMessage('success', "Votre compte a bien été validé.");
     }
 }

@@ -2448,7 +2448,7 @@ input[type="file"],
     -o-transition: all 200ms ease-in;
     -moz-transition: all 200ms ease-in;
 }
-input[type="checkbox"] {
+input[type="radio"] {
     display: inline;
     -webkit-font-smoothing: antialiased;
     width: 20px;
