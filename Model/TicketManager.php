@@ -1,6 +1,8 @@
 <?php
 namespace App\Model;
 
+use App\Core\Session;
+
 class TicketManager
 {
     const IMGDIRECTORY = 'style/images/episodes/';
@@ -46,7 +48,7 @@ class TicketManager
         $this->validator->validTitle($this->ticket->getTitle());
         $this->validator->validImage($this->ticket->getImage());
         $this->validator->validContent($this->ticket->getContent());
-
+        
         if (empty($this->validator->getErrors())) {
             return true;
         } else {
@@ -55,10 +57,12 @@ class TicketManager
         }
     }
 
-    public function insert($user)
+    public function insert()
     {
         if ($this->ticket->getImage()->getError() == 0) {
-
+            
+            
+            
             $baseFileName = Services::createBaseFilename(1, $this->ticket->getNextId('ticket')['Auto_increment']);
             $extFileName = Services::getExtension($this->ticket->getImage()->getName());
 
@@ -75,12 +79,14 @@ class TicketManager
 
         }
         $this->ticket->setNumber($this->ticket->getLast('ticket', 'number')->number + 1);
-        $this->ticket->insert($user->getId());
+
+
+        $this->ticket->insert(Session::getSession()->getId());
 
         $this->setMessage('success', "L'épisode a bien été créé.");
     }
 
-    public function update($user)
+    public function update()
     {
         if ($this->ticket->getImage()->getError() == 0) {
             
@@ -102,16 +108,16 @@ class TicketManager
             $this->ticket->setImgUrl('/' . $url);
 
         }
-        $this->ticket->update($user->getId());
+        $this->ticket->update(Session::getSession()->getId());
 
         $this->setMessage('success', "L'épisode a bien été mis à jour.");
     }
     
-    public function deleteimage($user)
+    public function deleteimage()
     {
         Services::deleteFile(substr($this->getTicket()->getImgUrl(), 1));
         $this->ticket->setImgUrl(null);
-        $this->ticket->update($user->getId());
+        $this->ticket->update(Session::getSession()->getId());
         $this->setMessage('success', "L'image a bien été supprimé.");
     }
 }

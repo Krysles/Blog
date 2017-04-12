@@ -7,7 +7,9 @@ class Session
 {
     public function __construct()
     {
-        session_start();
+        if (!self::getSession()) {
+            session_start();
+        };
         if ($this->notExistAttribut('auth')) {
             $user = new User();
             $user->setRole(User::VISITOR);
@@ -50,6 +52,13 @@ class Session
             unset($_SESSION[$name]);
         } else {
             throw new \Exception("Attribut absent.");
+        }
+    }
+
+    static public function getSession()
+    {
+        if (isset($_SESSION)) {
+            return $_SESSION['auth'];
         }
     }
 }

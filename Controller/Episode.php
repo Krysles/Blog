@@ -39,7 +39,7 @@ class Episode extends \App\Core\Controller
             $ticketManager = new \App\Model\TicketManager();
             $ticketManager->setTicket($datasForm, $datasImage);
             if ($ticketManager->isValid()) {
-                $ticketManager->insert($this->request->getSession()->getAttribut('auth'));
+                $ticketManager->insert();
                 $this->request->getSession()->setAttribut('flash', $ticketManager->getMessage());
                 header('Location: /episode/'.$ticketManager->getTicket()->getNumber());
                 exit();
@@ -77,7 +77,7 @@ class Episode extends \App\Core\Controller
             $this->request->getSession()->deleteAttribut('ticketManagerForm');
             $ticketManager->setTicket($datasForm, $datasImage);
             if ($ticketManager->isValid()) {
-                $ticketManager->update($this->request->getSession()->getAttribut('auth'));
+                $ticketManager->update();
                 $this->request->getSession()->setAttribut('flash', $ticketManager->getMessage());
                 header('Location: /episode/'.$ticketManager->getTicket()->getNumber());
                 exit();
@@ -104,7 +104,7 @@ class Episode extends \App\Core\Controller
             $ticketManager = new \App\Model\TicketManager();
             if ($ticketManager->getTicket()->getTicket($number)) {
                 $ticketManager->setTicket($ticketManager->getTicket()->getTicket($number));
-                $ticketManager->deleteimage($this->request->getSession()->getAttribut('auth'));
+                $ticketManager->deleteimage();
                 $this->request->getSession()->setAttribut('flash', $ticketManager->getMessage());
                 header('Location: /episode/'.$ticketManager->getTicket()->getNumber());
                 exit();
