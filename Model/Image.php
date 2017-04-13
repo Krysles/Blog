@@ -9,8 +9,8 @@ class Image
     private $error;
     private $size;
 
-    public function __construct($image) {
-        $this->hydrate($image);
+    public function __construct() {
+
     }
 
     public function hydrate(array $datas)

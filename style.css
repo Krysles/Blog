@@ -274,10 +274,12 @@ ol {
     margin-bottom: 15px
 }
 ul.circled {
-    padding: 0;
-    list-style: none;
+    padding: 0 0 0 10px;
+    list-style-position: outside;
+    color: #7498bc;
+    margin-right: 10px;
 }
-ul.circled li:before {
+/*ul.circled li:before {
     content: '●';
     margin-right: 10px;
     font-weight: normal;
@@ -285,6 +287,10 @@ ul.circled li:before {
     display: inline-block;
     color: #9cbc68;
     font-size: 11px;
+}*/
+ul.circled li {
+    padding: 0 10px;
+    marging: 0 10px;
 }
 .thin {
     width: 80%;

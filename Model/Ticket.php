@@ -1,7 +1,6 @@
 <?php
 namespace App\Model;
 
-
 use App\Core\Database;
 
 class Ticket extends Database
@@ -63,35 +62,6 @@ class Ticket extends Database
     public function getDate() { return $this->date; }
 
     public function setDate($date) { $this->date = $date; }
-
-    public function insert($userId)
-    {
-        $sql = "INSERT INTO ticket SET number = :number, title = :title, content = :content, imgUrl = :imgUrl, publish = :publish, date = NOW(), book_id = :bookId, user_id = :userId";
-        $this->runRequest($sql, array(
-            ':number' => $this->getNumber(),
-            ':title' => $this->getTitle(),
-            ':content' => $this->getContent(),
-            ':imgUrl' => $this->getImgUrl(),
-            ':publish' => $this->getPublish(),
-            ':bookId' => 1,
-            ':userId' => $userId
-        ));
-    }
-
-    public function update($userId)
-    {
-        $sql = "UPDATE ticket SET number = :number, title = :title, content = :content, imgUrl = :imgUrl, publish = :publish, date = NOW(), book_id = :bookId, user_id = :userId WHERE id = :id";
-        $this->runRequest($sql, array(
-            ':number' => $this->getNumber(),
-            ':title' => $this->getTitle(),
-            ':content' => $this->getContent(),
-            ':imgUrl' => $this->getImgUrl(),
-            ':publish' => $this->getPublish(),
-            ':bookId' => 1,
-            ':userId' => $userId,
-            'id' => $this->getId()
-        ));
-    }
 
     public function getTicket($number)
     {

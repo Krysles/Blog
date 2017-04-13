@@ -40,6 +40,6 @@ abstract class Mailer
         if (self::$mailer == null) {
             self::getMailer();
         }
-        self::$mailer->send(self::createMail($objet, $from, $to, $content));
+        self::$mailer->send(self::createMail($objet, $from, $to, nl2br($content)));
     }
 }

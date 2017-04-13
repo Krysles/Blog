@@ -94,7 +94,32 @@ class Episode extends \App\Core\Controller
 
     public function delete()
     {
-        $this->generateView();
+        if ($this->request->existParam('post', 'submitbtn')) {
+            $number = $this->request->getParam('get', 'id');
+            $ticketManager = new \App\Model\TicketManager();
+            $ticket = $ticketManager->getTicket()->getTicket($number);
+            $ticketManager = new \App\Model\TicketManager();
+            $ticketManager->setTicket($ticket);
+            $ticketManager->delete();
+            $this->request->getSession()->setAttribut('flash', $ticketManager->getMessage());
+            header('Location: /page');
+            exit();
+        } elseif ($this->request->existParam('get', 'id')) {
+            $number = $this->request->getParam('get', 'id');
+            $ticketManager = new \App\Model\TicketManager();
+            $ticket = $ticketManager->getTicket()->getTicket($number);
+            if ($ticket) {
+                $ticketManager->setTicket($ticket);
+                $ticket = $ticketManager->getTicket();
+                $this->generateView(array(
+                    'ticket' => $ticket
+                ));
+            } else {
+                $this->request->getSession()->setAttribut('flash', array('danger' => "Une erreur s'est produite."));
+                header('Location: /page');
+                exit();
+            }
+        }
     }
 
     public function imagedelete()

@@ -50,10 +50,4 @@ abstract class Database
         $sql = "SELECT MAX($column) AS number FROM $table";
         return $this->runRequest($sql)->fetch();
     }
-
-    public function getNextId($table)
-    {
-        $sql = "SHOW TABLE STATUS FROM jeanforteroche LIKE '$table'";
-        return $this->runRequest($sql)->fetch(\PDO::FETCH_ASSOC);
-    }
 }
