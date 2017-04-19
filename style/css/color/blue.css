@@ -164,6 +164,12 @@ ul.layout-switcher li a.active {
 #comments a.reply-link:hover {
     color: #7498bc
 }
+#comments button.reply:hover {
+    color: #7498bc
+}
+#comments a.report:hover {
+    color: #7498bc
+}
 .contact-info li a:hover {
     color: #7498bc
 }

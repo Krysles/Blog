@@ -120,11 +120,16 @@ class TicketManager extends Database
     public function delete()
     {
         $sql = "DELETE FROM ticket WHERE number = :number";
-
         $this->runRequest($sql, array(
             ':number' => $this->getTicket()->getNumber()
         ));
-        if (!$this->getTicket()->getTicket($this->getTicket()->getNumber())) {
+        
+        $sql = "DELETE FROM comment WHERE ticket_id = :ticket_id";
+        $this->runRequest($sql, array(
+            ':ticket_id' => $this->ticket->getId()
+        ));
+
+        if (!$this->getTicketFromBdd($this->getTicket()->getNumber())) {
             Services::deleteFile(substr($this->getTicket()->getImgUrl(), 1));
             $sql = "UPDATE ticket SET number = number - 1 WHERE number > :number";
             $this->runRequest($sql, array(
@@ -137,4 +142,23 @@ class TicketManager extends Database
             return false;
         }
     }
+
+    public function getTicketFromBdd($number)
+    {
+        $sql = "SELECT t.id id, t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl imgUrl, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.number = :number";
+        $ticket = $this->runRequest($sql, array(
+            ':number' => $number
+        ))->fetch(\PDO::FETCH_ASSOC);
+        return $ticket;
+    }
+
+    public function getAdjacentTickets($number)
+    {
+        $sql = "(SELECT number, title FROM ticket WHERE number > :number AND publish = 1 LIMIT 0, 2) UNION (SELECT number, title FROM ticket WHERE number < :number AND publish = 1 ORDER BY number DESC LIMIT 0, 2) ORDER BY number DESC";
+        $ticket = $this->runRequest($sql, array(
+            ':number' => $number
+        ))->fetchAll(\PDO::FETCH_ASSOC);
+        return $ticket;
+    }
+    
 }

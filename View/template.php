@@ -106,5 +106,21 @@
 <script>
     $.backstretch(["/style/images/art/background.jpg"]);
 </script>
+<script>
+    jQuery(document).ready(function ($) {
+        $('.reply').click(function(e) {
+            e.preventDefault();
+
+            var $form = $('#form-comment');
+            var $this = $(this);
+            var comment_id = $this.data('id');
+            var $comment = $('#comment-' + comment_id);
+            
+            $('#comment_id').val(comment_id);
+
+            $comment.after($form);
+        });
+    })
+</script>
 </body>
 </html>

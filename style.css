@@ -2005,12 +2005,17 @@ ul.layout-switcher li a.active {
 #comments ol.commentlist li {
     padding: 40px 0 0 0;
     margin-top: 10px;
-    border-top: 2px solid rgba(255,255,255,0.2);
+    border-bottom: 2px solid rgba(255,255,255,0.2);
 }
 #comments ol.commentlist li:first-child {
     border: none;
     margin: 0;
     padding-top: 30px;
+}
+#comments ol.commentlist li:last-child {
+    border: none;
+    margin: 0;
+    padding-bottom: 30px;
 }
 #comments .user {
     float: left;
@@ -2030,6 +2035,9 @@ ul.layout-switcher li a.active {
     overflow: inherit;
     padding: 0 0 0 55px;
     list-style: none;
+}
+#comments ul.children .message{
+    border-bottom: 2px solid rgba(255,255,255,0.2);
 }
 #comments ol.commentlist ul.children li {
     padding-right: 0;
@@ -2070,8 +2078,26 @@ ul.layout-switcher li a.active {
     padding: 0 10px 0 7px;
     color: #787878;
 }
+#comments button.reply, #comments a.report {
+    display: inline;
+    color: #787878;
+    background-color: inherit;
+    border: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 800;
+}
+#comments button.reply:hover, #comments a.report:hover {
+    color: #9cbc68
+}
+#comments button.reply:before, #comments a.report:before {
+    display: inline-block;
+    content: "|";
+    padding: 0 10px 0 7px;
+    color: #787878;
+}
 .comment-form-wrapper p {
-    padding-bottom: 20px
+    padding-bottom: 5px /*20*/
 }
 /*-----------------------------------------------------------------------------------*/
 /*	18. BASIC GALLERY

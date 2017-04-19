@@ -17,13 +17,13 @@
                                 <span class="date"><?php echo $ticket['date'] ?></span>
                                 <span class="comments"><a href="#">8 <i class="icon-chat-1"></i></a></span>
                                 <?php if ($ticket['publish'] == 0) : ?>
-                                <span class="publish">Non publié</span>
+                                    <span class="publish">Non publié</span>
                                 <?php endif; ?>
                             </div>
                             <?php if (!empty($ticket['imgUrl'])) : ?>
-                            <figure class="frame pull-right" style="width: 30%; margin-left: 20px; margin-bottom: 20px;">
-                                <img src="<?php echo $ticket['imgUrl']; ?>" alt=""/>
-                            </figure>
+                                <figure class="frame pull-right" style="width: 30%; margin-left: 20px; margin-bottom: 20px;">
+                                    <img src="<?php echo $ticket['imgUrl']; ?>" alt=""/>
+                                </figure>
                             <?php endif; ?>
                             <p><?php echo htmlspecialchars_decode($ticket['content']); ?></p>
                         </div>
@@ -34,109 +34,61 @@
 
                 <div class="divide20"></div>
 
-                <div id="comments" class="box">
-                    <h3>4 Comments</h3>
-                    <ol id="singlecomments" class="commentlist">
-                        <li>
-                            <div class="user frame"><img alt="" src="/style/images/art/u1.jpg" class="avatar"/></div>
-                            <div class="message">
-                                <div class="info">
-                                    <h2><a href="#">Connor Gibson</a></h2>
-                                    <div class="meta">
-                                        <div class="date">January 14, 2010</div>
-                                        <a class="reply-link" href="#">Reply</a></div>
-                                </div>
-                                <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula,
-                                    eget
-                                    lacinia odio sem nec elit. Sed posuere consectetur est at lobortis. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.
-                                    Vestibulum
-                                    id ligula porta felis euismod semper.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="user frame"><img alt="" src="/style/images/art/u2.jpg" class="avatar"/></div>
-                            <div class="message">
-                                <div class="info">
-                                    <h2><a href="#">Nikolas Brooten</a></h2>
-                                    <div class="meta">
-                                        <div class="date">February 21, 2010</div>
-                                        <a class="reply-link" href="#">Reply</a></div>
-                                </div>
-                                <p>Quisque tristique tincidunt metus non aliquam. Quisque ac risus sit amet quam sollicitudin vestibulum vitae malesuada libero. Mauris magna elit,
-                                    suscipit non ornare et, blandit a tellus. Pellentesque dignissim ornare elit, quis mattis eros sodales ac.</p>
-                            </div>
-                            <ul class="children">
-                                <li class="bypostauthor">
-                                    <div class="user frame"><img alt="" src="/style/images/art/u3.jpg" class="avatar"/></div>
-                                    <div class="message">
-                                        <div class="bypostauthor">
-                                            <div class="info">
-                                                <h2><a href="#">Pearce Frye</a></h2>
-                                                <div class="meta">
-                                                    <div class="date">February 22, 2010</div>
-                                                    <a class="reply-link" href="#">Reply</a></div>
+                <?php if (isset($comments) && !empty($comments)) : ?>
+                    <div id="comments" class="box">
+                        <h3>Commentaires</h3>
+                        <ol id="singlecomments" class="commentlist">
+                            <?php foreach ($comments as $comment) : ?>
+                                <li>
+                                    <div class="message" id="comment-<?php echo $comment->id; ?>">
+                                        <div class="info">
+                                            <h2><?php echo $comment->firstname . ' ' . $comment->lastname; ?></h2>
+                                            <div class="meta">
+                                                <div class="date"><?php echo $comment->date; ?></div>
+                                                <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
+                                                    <?php if ($comment->report == 0) : ?>
+                                                        <button class="reply" data-id="<?php echo $comment->id; ?>">répondre</button>
+                                                        <a href="/comment/<?php echo $comment->id; ?>/report" class="report">signaler</a>
+                                                    <?php else : ?>
+                                                        <span><em>Commentaire déjà signalé</em></span>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
                                             </div>
-                                            <p>Cras mattis consectetur purus sit amet fermentum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Etiam porta
-                                                sem
-                                                malesuada magna mollis euismod. Maecenas sed diam eget risus varius blandit non magna.</p>
                                         </div>
+                                        <p><?php echo $comment->content; ?></p>
                                     </div>
-                                    <ul class="children">
-                                        <li>
-                                            <div class="user frame"><img alt="" src="/style/images/art/u2.jpg" class="avatar"/></div>
-                                            <div class="message">
-                                                <div class="info">
-                                                    <h2><a href="#">Nikolas Brooten</a></h2>
-                                                    <div class="meta">
-                                                        <div class="date">April 4, 2010</div>
-                                                        <a class="reply-link" href="#">Reply</a></div>
-                                                </div>
-                                                <p>Nullam id dolor id nibh ultricies vehicula ut id. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam.
-                                                    Pellentesque
-                                                    ornare sem lacinia quam venenatis vestibulum.</p>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    <?php include 'Inc/comment.php'; ?>
                                 </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="user frame"><img alt="" src="/style/images/art/u4.jpg" class="avatar"/></div>
-                            <div class="message">
-                                <div class="info">
-                                    <h2><a href="#">Lou Bloxham</a></h2>
-                                    <div class="meta">
-                                        <div class="date">May 03, 2010</div>
-                                        <a class="reply-link" href="#">Reply</a></div>
-                                </div>
-                                <p>Sed posuere consectetur est at lobortis. Vestibulum id ligula porta felis euismod semper. Cum sociis natoque penatibus et magnis dis parturient
-                                    montes, nascetur ridiculus mus.</p>
-                            </div>
-                        </li>
-                    </ol>
-                </div>
-                <!-- /#comments -->
+
+                            <?php endforeach; ?>
+                        </ol>
+                    </div>
+                <?php endif; ?>
 
                 <div class="divide20"></div>
 
                 <div class="comment-form-wrapper box">
-                    <h3>Would you like to share your thoughts?</h3>
-                    <p>Your email address will not be published. Required fields are marked *</p>
-                    <form class="comment-form" name="form_name" action="#" method="post">
-                        <div class="name-field">
-                            <input type="text" name="first" title="Name*"/>
-                        </div>
-                        <div class="email-field">
-                            <input type="text" name="first" title="Email*"/>
-                        </div>
-                        <div class="website-field">
-                            <input type="text" name="first" title="Website"/>
-                        </div>
-                        <div class="message-field">
-                            <textarea name="textarea" id="textarea" rows="5" cols="30" title="Enter your comment here..."></textarea>
-                        </div>
-                        <input type="submit" value="Submit" name="submit" class="btn btn-submit"/>
-                    </form>
+                    <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
+                        <h5 id="comment-0">Laissez votre commentaire - <a class="reply" data-id="0">Commenter l'épisode</a></h5>
+                        <form class="comment-form" name="form_name" action="/comment/create" method="post" id="form-comment">
+                            <p>Tout commentaire non approprié sera supprimé et l'utilisateur sera restreint.</p>
+                            <div class="field">
+                                <input type="text" id="content" name="content" placeholder="Entrez votre commentaire" required="required"
+                                       value="<?php if (isset($_SESSION['commentManagerForm'])) : echo $_SESSION['commentManagerForm']->getContent(); endif; ?>"/>
+                                <input type="hidden" name="ticket_id" value="<?php echo $ticket['id']; ?>"/>
+                                <input type="hidden" name="ticket_number" value="<?php echo $ticket['number']; ?>"/>
+                                <input type="hidden" name="comment_id" value="0" id="comment_id"/>
+                            </div>
+                            <?php if (isset($_SESSION['commentManagerErrors']['content'])) : ?>
+                                <p class="alert alert-danger"><?php echo $_SESSION['commentManagerErrors']['content']; ?></p>
+                            <?php endif; ?>
+                            <button type="submit" value="submit" name="comment" class="btn btn-submit">Valider</button>
+                            <?php unset($_SESSION['commentManagerForm']); ?>
+                            <?php unset($_SESSION['commentManagerErrors']); ?>
+                        </form>
+                    <?php else : ?>
+                        <h5>Veuillez vous connecter pour commenter l'épisode.</h5>
+                    <?php endif; ?>
                 </div>
                 <!-- /.comment-form-wrapper -->
 
@@ -145,15 +97,6 @@
         <!-- /.content -->
 
         <aside class="col-md-4 col-sm-12 sidebar">
-
-            <!--
-            <div class="sidebox box widget">
-                <form class="searchform" method="get">
-                    <input type="text" id="s2" name="s" value="type and hit enter" onfocus="this.value=''" onblur="this.value='type and hit enter'"/>
-                </form>
-            </div>
-            -->
-            <!-- /.widget -->
 
             <div class="sidebox box widget">
                 <h3 class="widget-title section-title">Derniers commentaires</h3>
@@ -190,11 +133,13 @@
             <div class="sidebox box widget">
                 <h3 class="widget-title section-title">Episodes adjacents</h3>
                 <ul class="circled">
-                    <li><a href="#">Web Design (21)</a></li>
-                    <li><a href="#">Photography (19)</a></li>
-                    <li><a href="#">Graphic Design (16)</a></li>
-                    <li><a href="#">Manipulation (15)</a></li>
-                    <li><a href="#">Motion Graphics (12)</a></li>
+                    <?php foreach ($adjacentTickets as $adjacentTicket) : ?>
+                        <li>
+                            <a href="/episode/<?php echo $adjacentTicket['number']; ?>">
+                                <?php echo '(' . $adjacentTicket['number'] . ') ' . $adjacentTicket['title']; ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
             <!-- /.widget -->
@@ -202,11 +147,11 @@
             <div class="sidebox box widget">
                 <h3 class="widget-title section-title">Accès rapide</h3>
                 <ul class="tag-list">
-                    <li><a href="#" class="btn">Commenter l'épisode</a></li>
+                    <li><a href="#comment-0" class="btn">Commenter l'épisode</a></li>
                     <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::ADMIN) : ?>
-                    <li><a href="<?php echo $ticket['number']; ?>/update" class="btn">Editer l'épisode</a></li>
-                    <li><a href="/episode/create" class="btn">Créer un épisode</a></li>
-                    <li><a href="<?php echo $ticket['number']; ?>/delete" class="btn">Supprimer l'épisode</a></li>
+                        <li><a href="/episode/<?php echo $ticket['number']; ?>/update" class="btn">Editer l'épisode</a></li>
+                        <li><a href="/episode/create" class="btn">Créer un épisode</a></li>
+                        <li><a href="/episode/<?php echo $ticket['number']; ?>/delete" class="btn">Supprimer l'épisode</a></li>
                     <?php endif; ?>
                 </ul>
                 <!-- /.tag-list -->
@@ -221,3 +166,4 @@
 
 </div>
 <!-- /.container -->
+

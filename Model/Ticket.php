@@ -62,13 +62,4 @@ class Ticket extends Database
     public function getDate() { return $this->date; }
 
     public function setDate($date) { $this->date = $date; }
-
-    public function getTicket($number)
-    {
-        $sql = "SELECT t.id id, t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl imgUrl, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.number = :number";
-        $ticket = $this->runRequest($sql, array(
-            ':number' => $number
-        ))->fetch(\PDO::FETCH_ASSOC);
-        return $ticket;
-    }
 }

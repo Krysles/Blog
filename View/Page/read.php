@@ -71,6 +71,7 @@
             </div>
             <!-- /.widget -->
 
+            <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::ADMIN) : ?>
             <div class="sidebox box widget">
                 <h3 class="widget-title section-title">Episodes non publiés</h3>
                 <ul class="circled">
@@ -83,8 +84,8 @@
                     <?php endforeach; ?>
                 </ul>
             </div>
+
             <!-- /.widget -->
-            <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::ADMIN) : ?>
             <div class="sidebox box widget">
                 <h3 class="widget-title section-title">Accès rapide</h3>
                 <ul class="tag-list">

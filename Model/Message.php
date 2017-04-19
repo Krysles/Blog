@@ -50,4 +50,11 @@ class Message extends Mailer
         $objet = "Contact de " . $email . " : " . $subject;
         $this->sendEmail($objet, $from, $to, $content);
     }
+
+    function sendReport()
+    {
+        $from = $to = array(Config::get("maileraddress") => Config::get("mailerauthor"));
+        $objet = "Commentaire signalé.";
+        $this->sendEmail($objet, $from, $to, "Un commentaire vient d'être signalé.");
+    }
 }
