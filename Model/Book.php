@@ -5,44 +5,55 @@ use \App\Core\Database;
 
 class Book extends Database
 {
-    private function getBaseQuery()
-    {
-        return "SELECT b.title title, b.subtitle subtitle, b.summary summary, b.imgUrl url, u.firstname firstname, u.lastname lastname FROM book b INNER JOIN user u ON b.user_id = u.id ";
+    private $id;
+    private $title;
+    private $subtitle;
+    private $summary;
+    private $imgUrl;
+    private $firstname;
+    private $lastname;
+
+    public function __construct() {
+
     }
 
-    public function getTheLastBook()
+    public function hydrate(array $datas)
     {
-        $sql = $this->getBaseQuery() . 'ORDER BY b.id DESC';
-        $theLastBook = $this->runRequest($sql)->fetch();
-        return $theLastBook;
+        foreach ($datas as $key => $value)
+        {
+            $method = 'set'.ucfirst($key);
+            if (method_exists($this, $method))
+            {
+                $this->$method($value);
+            }
+        }
     }
+    
+    public function getId() { return $this->id; }
 
-    public function countTickets()
-    {
-        $sql = "SELECT count(*) AS nbTickets FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.publish = 1";
-        return $this->runRequest($sql)->fetch()->nbTickets;
-    }
+    public function setId($id) { $this->id = $id; }
 
-    public function getTickets($start, $nbEntriesPerPage)
-    {
-        $sql = "SELECT t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl imgUrl, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.publish = 1 ORDER BY t.number DESC LIMIT :start, :nbEntriesPerPage";
-        $tickets = $this->runRequest($sql, array(
-            ':start' => $start,
-            ':nbEntriesPerPage' => $nbEntriesPerPage
-        ))->fetchAll(\PDO::FETCH_ASSOC);
-        return $tickets;
-    }
+    public function getTitle() { return $this->title; }
 
-    public function getTicketsNoPublish()
-    {
-        $sql = "SELECT t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl imgUrl, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.publish = 0 ORDER BY t.number DESC";
-        $tickets = $this->runRequest($sql)->fetchAll(\PDO::FETCH_ASSOC);
-        return $tickets;
-    }
+    public function setTitle($title) { $this->title = $title; }
 
-    public function getTicketNumbers()
-    {
-        $sql = "SELECT t.number number FROM ticket t INNER JOIN book b ON t.book_id = b.id";
-        return $this->runRequest($sql)->fetchAll();
-    }
+    public function getSubtitle() { return $this->subtitle; }
+
+    public function setSubtitle($subtitle) { $this->subtitle = $subtitle; }
+
+    public function getSummary() { return $this->summary; }
+
+    public function setSummary($summary) { $this->summary = $summary; }
+
+    public function getImgUrl() { return $this->imgUrl; }
+
+    public function setImgUrl($imgUrl) { $this->imgUrl = $imgUrl; }
+
+    public function getFirstname() { return $this->firstname; }
+
+    public function setFirstname($firstname) { $this->firstname = $firstname; }
+
+    public function getLastname() { return $this->lastname; }
+
+    public function setLastname($lastname) { $this->lastname = $lastname; }
 }

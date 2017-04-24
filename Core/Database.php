@@ -21,7 +21,6 @@ abstract class Database
                 }
             }
             $result->execute();
-            //$result->execute($params);
         }
         return $result;
     }
@@ -49,5 +48,14 @@ abstract class Database
     {
         $sql = "SELECT MAX($column) AS number FROM $table";
         return $this->runRequest($sql)->fetch();
+    }
+
+    public function count($table, $column, $params = array())
+    {
+        $sql = "SELECT COUNT($column) AS number FROM $table WHERE 1 = 1";
+        foreach ($params as $key => $value) {
+            $sql = $sql . " AND $key = :$key";
+        }
+        return $this->runRequest($sql, $params)->fetch()->number;
     }
 }

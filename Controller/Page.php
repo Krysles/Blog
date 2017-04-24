@@ -15,21 +15,13 @@ class Page extends \App\Core\Controller
             $page->setPage(1);
         }
         
-        $title = $page->getTitle();
-        
-        $tickets = $page->getTickets();
-
-        $ticketsNoPublish = $page->getBook()->getTicketsNoPublish();
-
-        $lastTickets = $page->getBook()->getTickets(0, 10);
-
         $paginator = new \App\Model\Paginator($page);
-
+        
         $this->generateView(array(
-            'title' => $title,
-            'tickets' => $tickets,
-            'ticketsNoPublish' => $ticketsNoPublish,
-            'lastTickets' => $lastTickets,
+            'book' => $page->getBookManager()->getBook(),
+            'tickets' => $page->getTicketsFromPage(),
+            'ticketsNoPublish' => $page->getTicketManager()->getTicketsNoPublish(),
+            'lastTickets' => $page->getTicketManager()->getTickets(0, 10),
             'paginator' => $paginator->generate()
         ));
     }

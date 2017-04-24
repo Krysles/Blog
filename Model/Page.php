@@ -8,17 +8,18 @@ class Page extends Database {
     const ENTRIESPERPAGE = 5;
 
     private $page;
-    private $book;
+    private $bookManager;
+    private $ticketManager;
     private $entries;
-    private $title;
     private $nbPages;
     private $message = array();
     
     public function __construct()
     {
-        $this->book = new \App\Model\Book();
-        $this->entries = $this->book->countTickets();
-        $this->title = $this->book->getTheLastBook()->title;
+        $this->bookManager = new \App\Model\BookManager();
+        $this->bookManager->setBook($this->bookManager->getTheLastBook());
+        $this->ticketManager = new \App\Model\TicketManager();
+        $this->entries = $this->ticketManager->count('ticket', 'id', array('publish' => 1)); //
         $this->nbPages = ceil($this->entries / self::ENTRIESPERPAGE);
     }
 
@@ -26,17 +27,17 @@ class Page extends Database {
 
     public function setPage($page) { $this->page = $page; }
 
-    public function getBook() { return $this->book; }
+    public function getBookManager() { return $this->bookManager; }
 
-    public function setBook($book) { $this->book = $book; }
+    public function setBookManager($bookManager) { $this->bookManager = $bookManager; }
+
+    public function getTicketManager() { return $this->ticketManager; }
+
+    public function setTicketManager($ticketManager) { $this->ticketManager = $ticketManager; }
 
     public function getEntries() { return $this->entries; }
 
     public function setEntries($entries) { $this->entries = $entries; }
-
-    public function getTitle() { return $this->title; }
-
-    public function setTitle($title) { $this->title = $title; }
     
     public function getNbPages() { return $this->nbPages; }
     
@@ -57,9 +58,9 @@ class Page extends Database {
         }
     }
 
-    public function getTickets()
+    public function getTicketsFromPage()
     {
         $start = ($this->getPage() * self::ENTRIESPERPAGE - self::ENTRIESPERPAGE);
-        return $this->book->getTickets($start, self::ENTRIESPERPAGE);
+        return $this->ticketManager->getTickets($start, self::ENTRIESPERPAGE);
     }
 }

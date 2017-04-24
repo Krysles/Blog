@@ -29,18 +29,18 @@ class Episode extends \App\Core\Controller
 
             $comments_by_id = [];
 
-            foreach ($comments as $comment) {
-                $comments_by_id[$comment->id] = $comment;
-            }
+            /*foreach ($comments as $comment) {
+            }*/
 
             foreach ($comments as $k => $comment) {
+                $comments_by_id[$comment->id] = $comment;
                 if ($comment->comment_id != 0) {
                     $comments_by_id[$comment->comment_id]->children[] = $comment;
                     unset($comments[$k]);
                 }
             }
             // -------------------------
-            
+
 
             $ticketManager = new \App\Model\TicketManager();
             $ticket = $ticketManager->getTicketFromBdd($ticketid);

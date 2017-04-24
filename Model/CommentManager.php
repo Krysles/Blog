@@ -50,7 +50,7 @@ class CommentManager extends Database
 
     public function getComments($ticketid)
     {
-        $sql = "SELECT c.id, c.content, c.date, c.report, c.comment_id, u.firstname, u.lastname
+        $sql = "SELECT c.id, c.content, c.date, c.report, c.level, c.comment_id, u.firstname, u.lastname
                 FROM comment c
                 INNER JOIN user u
                 ON c.user_id = u.id
@@ -86,5 +86,50 @@ class CommentManager extends Database
         $message = new Message();
         $message->sendReport();
         $this->setMessage('success', "Le commentaire vient d'être signalé.");
+    }
+
+    public function getListCommentsReport()
+    {
+        $sql = "SELECT c.id as id, c.content as content, u.firstname as firstname, u.lastname as lastname, t.number as number, t.title as title
+                FROM comment c
+                INNER JOIN ticket t
+                ON c.ticket_id = t.id
+                INNER JOIN user u
+                ON c.user_id = u.id
+                WHERE c.report = 1
+                ORDER BY c.id DESC";
+        return $this->runRequest($sql)->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function isReport()
+    {
+        $this->validator = new ValidateComment();
+
+        $this->validator->validReport($this->comment->getReport());
+
+        if (empty($this->validator->getErrors())) {
+            return true;
+        } else {
+            $this->setMessage('danger', "Un problème a été rencontré lors de l'approbation du commentaire.");
+            return false;
+        }
+    }
+
+    public function approve()
+    {
+        $this->comment->setReport(0);
+        $sql = "UPDATE comment SET report = :report WHERE id = :id";
+        $this->runRequest($sql, array(
+            ':report' => $this->comment->getReport(),
+            ':id' => $this->comment->getId()
+        ));
+        $this->setMessage('success', "Le commentaire vient d'être approuvé.");
+    }
+
+    public function delete() {
+        $sql = "DELETE FROM comment WHERE id = :id OR comment_id = :id";
+        $this->runRequest($sql, array(
+            ':id' => $this->comment->getId()
+        ));
     }
 }

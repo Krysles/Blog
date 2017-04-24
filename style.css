@@ -171,9 +171,13 @@ textarea {
     font-size: 15px;
     font-weight: normal;
 }
+p.nomarge {
+    margin: 0
+}
 p {
     margin: 0 0 20px
 }
+
 a {
     color: #9cbc68;
     -webkit-transition: all 200ms ease-in;
@@ -221,6 +225,18 @@ h5 {
 h6 {
     font-size: 14px;
     line-height: 20px;
+}
+.blue {
+    color: #7498bc;
+}
+.panel-heading .white {
+    color: #fff !important;
+}
+.panel-heading .white:hover {
+    color: #7498bc !important;
+}
+.grey {
+    color: #787878 !important;
 }
 .section-title,
 h1.post-title {
@@ -309,8 +325,8 @@ ul.circled li {
 hr {
     border: none;
     border-bottom: 2px solid rgba(255,255,255,0.2);
-    padding-bottom: 40px;
-    margin-bottom: 70px;
+    padding-bottom: 20px; /* 40 */
+    margin-bottom: 40px; /* 70 */
 }
 .alert {
     padding: 5px 10px;
@@ -827,6 +843,18 @@ section.naked {
     color: #9cbc68;
     display: inline-block;
     margin-bottom: 15px;
+}
+.services-3 .small i {
+    font-size: 22px;
+    margin: 0;
+}
+.services-3 .small h5 {
+    font-size: 22px;
+    margin-top: -10px;
+}
+.services-3 .small p {
+    font-size: 10px;
+    margin-top: -10px;
 }
 /*-----------------------------------------------------------------------------------*/
 /*	06. OVERLAY
@@ -2078,7 +2106,8 @@ ul.layout-switcher li a.active {
     padding: 0 10px 0 7px;
     color: #787878;
 }
-#comments button.reply, #comments a.report {
+#comments button.reply,
+#comments a.report {
     display: inline;
     color: #787878;
     background-color: inherit;
@@ -2087,8 +2116,9 @@ ul.layout-switcher li a.active {
     font-size: 12px;
     font-weight: 800;
 }
-#comments button.reply:hover, #comments a.report:hover {
-    color: #9cbc68
+#comments button.reply:hover,
+#comments a.approve:hover {
+    color: #9cbc68 !important;
 }
 #comments button.reply:before, #comments a.report:before {
     display: inline-block;
@@ -3333,7 +3363,7 @@ textarea {
 	    padding-top: 50px
 	}
 	.page {
-	    padding-top: 16px
+	    padding-top: 100px
 	}
 	.footer {
 	    margin-top: -86px

@@ -96,7 +96,7 @@ class TicketManager extends Database
             ':publish' => $this->ticket->getPublish(),
             ':bookId' => 1,
             ':userId' => Session::getSession()->getId(),
-            'id' => $this->ticket->getId()
+            ':id' => $this->ticket->getId()
         ));
 
         $this->setMessage('success', "L'épisode a bien été mis à jour.");
@@ -160,5 +160,21 @@ class TicketManager extends Database
         ))->fetchAll(\PDO::FETCH_ASSOC);
         return $ticket;
     }
-    
+
+    public function getTickets($start, $nbEntriesPerPage)
+    {
+        $sql = "SELECT t.number number, t.title title, t.content content, t.publish publish, t.date date, t.imgUrl imgUrl, u.lastname lastname, u.firstname firstname FROM ticket t INNER JOIN user u ON t.user_id = u.id INNER JOIN book b ON t.book_id = b.id WHERE b.id = 1 AND t.publish = 1 ORDER BY t.number DESC LIMIT :start, :nbEntriesPerPage";
+        $tickets = $this->runRequest($sql, array(
+            ':start' => $start,
+            ':nbEntriesPerPage' => $nbEntriesPerPage
+        ))->fetchAll(\PDO::FETCH_ASSOC);
+        return $tickets;
+    }
+
+    public function getTicketsNoPublish()
+    {
+        $sql = "SELECT number, title FROM ticket WHERE publish = 0 ORDER BY number DESC";
+        $tickets = $this->runRequest($sql)->fetchAll(\PDO::FETCH_ASSOC);
+        return $tickets;
+    }
 }

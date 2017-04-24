@@ -1,4 +1,4 @@
-<?php $this->title = $title; ?>
+<?php $this->title = $book->getTitle(); ?>
 
 <div class="container inner">
     <div class="blog list-view row">
@@ -63,7 +63,7 @@
                     <?php foreach ($lastTickets as $ticket) : ?>
                         <li>
                             <a href="/episode/<?php echo $ticket['number']; ?>">
-                                <?php echo $ticket['title']; ?>
+                                <?php echo '(' . $ticket['number'] . ') ' . $ticket['title']; ?>
                             </a>
                         </li>
                     <?php endforeach; ?>
@@ -78,7 +78,7 @@
                     <?php foreach ($ticketsNoPublish as $ticket) : ?>
                         <li>
                             <a href="/episode/<?php echo $ticket['number']; ?>">
-                                <?php echo $ticket['title']; ?>
+                                <?php echo '(' . $ticket['number'] . ') ' . $ticket['title']; ?>
                             </a>
                         </li>
                     <?php endforeach; ?>

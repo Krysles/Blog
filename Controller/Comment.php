@@ -11,6 +11,10 @@ class Comment extends \App\Core\Controller
     protected $createmax = \App\Model\User::ADMIN;
     protected $reportmin = \App\Model\User::MEMBER;
     protected $reportmax = \App\Model\User::ADMIN;
+    protected $approvemin = \App\Model\User::ADMIN;
+    protected $approvemax = \App\Model\User::ADMIN;
+    protected $deletemin = \App\Model\User::ADMIN;
+    protected $deletemax = \App\Model\User::ADMIN;
 
     public function read()
     {
@@ -63,6 +67,63 @@ class Comment extends \App\Core\Controller
                 $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
                 header('Location: /episode/' . $commentManager->getComment()->getTicket_number());
                 exit();
+            } else {
+                $this->request->getSession()->setAttribut('flash', array('danger' => "Impossible de trouver le commentaire."));
+                header('Location: /page');
+                exit();
+            }
+        } else {
+            $this->request->getSession()->setAttribut('flash', array('danger' => "Une erreur s'est produite."));
+            header('Location: /page');
+            exit();
+        }
+    }
+    
+    public function approve()
+    {
+        if ($this->request->existParam('get', 'id')) {
+            $commentid = $this->request->getParam('get', 'id');
+            $commentManager = new \App\Model\CommentManager();
+            if ($commentManager->getCommentFromBdd($commentid)) {
+                $commentManager->getComment()->hydrate($commentManager->getCommentFromBdd($commentid));
+                if($commentManager->isReport()) {
+                    $commentManager->approve();
+                    $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
+                    header('Location: /admin');
+                    exit();
+                } else {
+                    $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
+                    header('Location: /admin');
+                    exit();
+                }
+            } else {
+                $this->request->getSession()->setAttribut('flash', array('danger' => "Impossible de trouver le commentaire."));
+                header('Location: /page');
+                exit();
+            }
+        } else {
+            $this->request->getSession()->setAttribut('flash', array('danger' => "Une erreur s'est produite."));
+            header('Location: /page');
+            exit();
+        }
+    }
+    public function delete()
+    {
+        if ($this->request->existParam('get', 'id')) {
+            $commentid = $this->request->getParam('get', 'id');
+            $commentManager = new \App\Model\CommentManager();
+            if ($commentManager->getCommentFromBdd($commentid)) {
+                $commentManager->getComment()->hydrate($commentManager->getCommentFromBdd($commentid));
+                if($commentManager->isReport()) {
+                    $commentManager->delete();
+                    $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
+                    header('Location: /admin');
+                    exit();
+                } else {
+                    $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
+                    header('Location: /admin');
+                    exit();
+                }
             } else {
                 $this->request->getSession()->setAttribut('flash', array('danger' => "Impossible de trouver le commentaire."));
                 header('Location: /page');

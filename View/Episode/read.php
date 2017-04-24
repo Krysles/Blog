@@ -46,8 +46,8 @@
                                             <div class="meta">
                                                 <div class="date"><?php echo $comment->date; ?></div>
                                                 <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
+                                                    <button class="reply" data-id="<?php echo $comment->id; ?>">répondre</button>
                                                     <?php if ($comment->report == 0) : ?>
-                                                        <button class="reply" data-id="<?php echo $comment->id; ?>">répondre</button>
                                                         <a href="/comment/<?php echo $comment->id; ?>/report" class="report">signaler</a>
                                                     <?php else : ?>
                                                         <span><em>Commentaire déjà signalé</em></span>
@@ -97,37 +97,38 @@
         <!-- /.content -->
 
         <aside class="col-md-4 col-sm-12 sidebar">
+            <!--
+                        <div class="sidebox box widget">
+                            <h3 class="widget-title section-title">Derniers commentaires</h3>
+                            <ul class="post-list">
+                                <li>
+                                    <figure class="frame pull-left">
+                                        <div class="icon-overlay"><a href="blog-post.html"><img src="/style/images/art/a1.jpg" alt=""/> </a></div>
+                                    </figure>
+                                    <div class="meta"><em><span class="date">3 Oct 2012</span><span class="comments"><a href="#">8 <i class="icon-chat-1"></i></a></span></em>
+                                        <h5><a href="blog-post.html">Magna Mollis Ultricies</a></h5>
+                                    </div>
+                                </li>
+                                <li>
+                                    <figure class="frame pull-left">
+                                        <div class="icon-overlay"><a href="blog-post.html"><img src="/style/images/art/a2.jpg" alt=""/> </a></div>
+                                    </figure>
+                                    <div class="meta"><em><span class="date">28 Sep 2012</span><span class="comments"><a href="#">5 <i class="icon-chat-1"></i></a></span></em>
+                                        <h5><a href="blog-post.html">Ornare Nullam Risus</a></h5>
+                                    </div>
+                                </li>
+                                <li>
+                                    <figure class="frame pull-left">
+                                        <div class="icon-overlay"><a href="blog-post.html"><img src="/style/images/art/a3.jpg" alt=""/> </a></div>
+                                    </figure>
+                                    <div class="meta"><em><span class="date">15 Aug 2012</span><span class="comments"><a href="#">9 <i class="icon-chat-1"></i></a></span></em>
+                                        <h5><a href="blog-post.html">Euismod Nullam</a></h5>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- /.post-list -->
 
-            <div class="sidebox box widget">
-                <h3 class="widget-title section-title">Derniers commentaires</h3>
-                <ul class="post-list">
-                    <li>
-                        <figure class="frame pull-left">
-                            <div class="icon-overlay"><a href="blog-post.html"><img src="/style/images/art/a1.jpg" alt=""/> </a></div>
-                        </figure>
-                        <div class="meta"><em><span class="date">3 Oct 2012</span><span class="comments"><a href="#">8 <i class="icon-chat-1"></i></a></span></em>
-                            <h5><a href="blog-post.html">Magna Mollis Ultricies</a></h5>
-                        </div>
-                    </li>
-                    <li>
-                        <figure class="frame pull-left">
-                            <div class="icon-overlay"><a href="blog-post.html"><img src="/style/images/art/a2.jpg" alt=""/> </a></div>
-                        </figure>
-                        <div class="meta"><em><span class="date">28 Sep 2012</span><span class="comments"><a href="#">5 <i class="icon-chat-1"></i></a></span></em>
-                            <h5><a href="blog-post.html">Ornare Nullam Risus</a></h5>
-                        </div>
-                    </li>
-                    <li>
-                        <figure class="frame pull-left">
-                            <div class="icon-overlay"><a href="blog-post.html"><img src="/style/images/art/a3.jpg" alt=""/> </a></div>
-                        </figure>
-                        <div class="meta"><em><span class="date">15 Aug 2012</span><span class="comments"><a href="#">9 <i class="icon-chat-1"></i></a></span></em>
-                            <h5><a href="blog-post.html">Euismod Nullam</a></h5>
-                        </div>
-                    </li>
-                </ul>
-                <!-- /.post-list -->
-            </div>
+
             <!-- /.widget -->
 
             <div class="sidebox box widget">
@@ -144,18 +145,20 @@
             </div>
             <!-- /.widget -->
 
-            <div class="sidebox box widget">
-                <h3 class="widget-title section-title">Accès rapide</h3>
-                <ul class="tag-list">
-                    <li><a href="#comment-0" class="btn">Commenter l'épisode</a></li>
-                    <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::ADMIN) : ?>
-                        <li><a href="/episode/<?php echo $ticket['number']; ?>/update" class="btn">Editer l'épisode</a></li>
-                        <li><a href="/episode/create" class="btn">Créer un épisode</a></li>
-                        <li><a href="/episode/<?php echo $ticket['number']; ?>/delete" class="btn">Supprimer l'épisode</a></li>
-                    <?php endif; ?>
-                </ul>
-                <!-- /.tag-list -->
-            </div>
+            <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
+                <div class="sidebox box widget">
+                    <h3 class="widget-title section-title">Accès rapide</h3>
+                    <ul class="tag-list">
+                        <li><a href="#comment-0" class="btn">Commenter l'épisode</a></li>
+                        <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::ADMIN) : ?>
+                            <li><a href="/episode/<?php echo $ticket['number']; ?>/update" class="btn">Editer l'épisode</a></li>
+                            <li><a href="/episode/create" class="btn">Créer un épisode</a></li>
+                            <li><a href="/episode/<?php echo $ticket['number']; ?>/delete" class="btn">Supprimer l'épisode</a></li>
+                        <?php endif; ?>
+                    </ul>
+                    <!-- /.tag-list -->
+                </div>
+            <?php endif; ?>
             <!-- /.widget -->
 
         </aside>

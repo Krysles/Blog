@@ -8,6 +8,10 @@
     <link rel="shortcut icon" href="/style/images/favicon.png">
     <title><?php echo $title . ' - Jean Forteroche'; ?></title>
     <!-- Bootstrap core CSS -->
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache" content="no store" />
+    <meta http-equiv="Expires" content="-1" />
     <link href="/style/css/bootstrap.min.css" rel="stylesheet">
     <link href="/style/css/plugins.css" rel="stylesheet">
     <link href="/style/css/prettify.css" rel="stylesheet">
@@ -49,7 +53,7 @@
                 <li><a href="/#contact" class="hint--right" data-hint="Contact"><i class="budicon-profile"></i><span>Contact</span></a></li>
                 
                 <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
-                <li><a href="/admin" class="hint--right" data-hint="Mon compte"><i class="budicon-setting"></i><span>Mon compte</span></a></li>
+                <li><a href="/admin" class="hint--right" data-hint="Tableau de bord"><i class="budicon-setting"></i><span>Tableau de bord</span></a></li>
                 <li><a href="/deconnexion" class="hint--right" data-hint="Déconnexion"><i class="budicon-cancel-1"></i><span>Déconnexion</span></a></li>
                 <?php else : ?>
                 <li><a href="/#register" class="hint--right" data-hint="Inscription"><i class="budicon-author"></i><span>Inscription</span></a></li>

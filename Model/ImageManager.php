@@ -3,7 +3,7 @@ namespace App\Model;
 
 class ImageManager
 {
-    const IMGDIRECTORY = 'style/images/episodes/';
+    const IMGDIRECTORY = 'style/photos/';
     
     private $image;
 
@@ -22,9 +22,9 @@ class ImageManager
         $this->image->hydrate($image);
     }
 
-    public function process($ticket)
+    public function process($ticket, $book = 1)
     {
-        $baseFileName = Services::createBaseFilename(1, $ticket->getId());
+        $baseFileName = Services::createBaseFilename($book, $ticket->getId());
         $extFileName = Services::getExtension($this->getImage()->getName());
 
         $fileName = $baseFileName . '.' . strtolower($extFileName);

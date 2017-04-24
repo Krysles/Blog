@@ -9,8 +9,8 @@ if (isset($comment->children)) : ?>
                         <div class="meta">
                             <div class="date"><?php echo $comment->date; ?></div>
                             <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
-                                <?php if ($comment->report == 0) : ?>
                                     <button class="reply" data-id="<?php echo $comment->id; ?>">répondre</button>
+                                <?php if ($comment->report == 0) : ?>
                                     <a href="/comment/<?php echo $comment->id; ?>/report" class="report">signaler</a>
                                 <?php else : ?>
                                     <span><em>Commentaire déjà signalé</em></span>

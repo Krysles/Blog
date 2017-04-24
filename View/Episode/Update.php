@@ -42,7 +42,7 @@
                                 <p class="alert alert-danger"><?php echo $_SESSION['ticketManagerErrors']['image']; ?></p>
                             <?php endif; ?>
                         </div>
-                        <div class="form-row text-input-row picture-field">
+                        <div class="form-row text-input-row content-field">
                             <label>Contenu de l'épisode</label>
                             <textarea id="content" name="content"
                                       class="text-input defaultText required"><?php if (isset($_SESSION['ticketManagerForm'])) : echo $_SESSION['ticketManagerForm']->getContent(); endif; ?></textarea>

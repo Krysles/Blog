@@ -51,7 +51,7 @@ class Lostpassword
             $this->user->setPassword(Services::generateStr(60));
             $this->user->setResetToken(Services::generateStr(60));
             $date = new \DateTime();
-            $this->user->setResetDate($date->format('Y-m-d H:i:s')); // Ajouter 24 heures
+            $this->user->setResetDate($date->format('Y-m-d H:i:s'));
             $this->user->updateUser(array(
                 'password' => $this->user->getPassword(),
                 'resetToken' => $this->user->getResetToken(),

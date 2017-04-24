@@ -7,18 +7,18 @@ use App\Core\WebsiteConfig;
 
 class Home extends Controller
 {
-    private $websiteConfig;
-    private $book;
-    
     public function read()
     {
-        $this->websiteConfig = new WebsiteConfig();
-        $this->book = new Book();
-        $config = $this->websiteConfig->getConfig();
-        $book = $this->book->getTheLastBook();
+        $configurationManager = new \App\Model\ConfigurationManager();
+        $configurationManager->setConfiguration($configurationManager->getConfig());
+
+        $bookManager = new \App\Model\BookManager();
+        $bookManager->setBook($bookManager->getTheLastBook());
+
+
         $this->generateView(array(
-            'config' => $config,
-            'book' => $book
+            'configuration' => $configurationManager->getConfiguration(),
+            'book' => $bookManager->getBook()
         ));
     }
 }

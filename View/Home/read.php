@@ -6,7 +6,7 @@
             <ul>
                 <li data-transition="fade"><img src="/style/images/dummy.png" alt="slidebg1" data-bgposition="center top" data-bgfit="cover" data-bgrepeat="repeat">
                     <h1 class="tp-caption caption large sfb" data-x="center" data-y="400" data-voffset="-25" data-speed="900" data-start="1000" data-endspeed="100"
-                        data-easing="Sine.easeOut" style="font-size: 50px; text-shadow: 1px 1px 1px black;"><?php echo $config->title; ?></h1>
+                        data-easing="Sine.easeOut" style="font-size: 50px; text-shadow: 1px 1px 1px black;"><?php echo $configuration->getTitle(); ?></h1>
                     <div class="tp-caption small tp-fade fadeout tp-resizeme" data-x="center" data-y="500" data-voffset="25" data-speed="100"
                          data-start="1500"
                          data-easing="Power4.easeOut"
@@ -16,7 +16,7 @@
                          data-endelementdelay="0"
                          data-endspeed="100"
                          data-endeasing="Power1.easeOut"
-                         style="z-index: 3; font-size: 35px; max-width: auto; max-height: auto; white-space: nowrap; text-shadow: 1px 1px 1px black;"><?php echo $config->subtitle; ?>
+                         style="z-index: 3; font-size: 35px; max-width: auto; max-height: auto; white-space: nowrap; text-shadow: 1px 1px 1px black;"><?php echo $configuration->getSubtitle(); ?>
                     </div>
                     <div class="arrow smooth"><a href="#about"><i class="icon-down-open-big"></i></a></div>
                 </li>
@@ -32,15 +32,19 @@
     <section id="about">
         <div class="box">
             <div class="row">
+                <?php if (!empty($book->getImgUrl())) : ?>
                 <div class="col-md-5 col-md-push-7 col-sm-12">
-                    <figure class="frame"><img src="<?php echo '/' . $book->url; ?>" alt=""/></figure>
+                    <figure class="frame"><img src="<?php echo $book->getImgUrl(); ?>" alt=""/></figure>
                 </div>
-                <!-- /column -->
                 <div class="col-md-7 col-md-pull-5 col-sm-12">
-                    <h2 class="section-title"><a href="/page"><?php echo $book->title; ?></a></h2>
-                    <p class="lead"><?php echo $book->subtitle; ?></p>
-                    <p><?php echo $book->summary; ?></p>
-                    <p class="text-right"><?php echo $book->firstname . ' ' . $book->lastname; ?></p>
+                <?php else: ?>
+                <div class="col-sm-12">
+                <?php endif; ?>
+                <!-- /column -->
+                    <h2 class="section-title"><a href="/page"><?php echo $book->getTitle(); ?></a></h2>
+                    <p class="lead"><?php echo $book->getSubtitle(); ?></p>
+                    <p><?php echo nl2br($book->getSummary()); ?></p>
+                    <p class="text-right"><?php echo $book->getFirstname() . ' ' . $book->getLastname(); ?></p>
                 </div>
                 <!-- /column -->
             </div>

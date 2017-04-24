@@ -95,4 +95,25 @@ class User extends Database
         }
         return $this->runRequest($sql, $params)->fetch(\PDO::FETCH_ASSOC);
     }
+
+    public function getUsersMinRole($minRole)
+    {
+        $sql = "SELECT id, firstname, lastname, role, email FROM user WHERE role >= :minRole";
+        return $this->runRequest($sql, array(
+            ':minRole' => $minRole
+        ))->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getUsersMaxRole($maxRole)
+    {
+        $sql = "SELECT id, firstname, lastname, role FROM user WHERE role <= :maxRole";
+        return $this->runRequest($sql, array(
+            ':maxRole' => $maxRole
+        ))->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function banned()
+    {
+        
+    }
 }
