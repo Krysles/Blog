@@ -48,7 +48,8 @@ class Recovery
         $this->user->setConfirmPassword(NULL);
         $this->user->updateUser(array(
             'password' => $this->user->getPassword(),
-            'resetToken' => NULL
+            'resetToken' => NULL,
+            'resetDate' => $this->user->getResetDate()
         ), $this->user->getId());
         $message = new Message();
         $message->sendConfirmRecovery($this->user);

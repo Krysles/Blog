@@ -63,8 +63,10 @@ class Recovery extends Controller
                 $recovery = new \App\Model\Recovery();
                 $recovery->setUser($datasForm);
                 if ($recovery->isValid()) {
+                    $date = new \DateTime();
                     $recovery->setUser($this->request->getSession()->getAttribut('recovery'));
                     $this->request->getSession()->deleteAttribut('recovery');
+                    $recovery->getUser()->setResetDate($date->format('Y-m-d H:i:s'));
                     $recovery->recovery();
                     $this->request->getSession()->setAttribut('flash', $recovery->getMessage());
                     header('Location: /');

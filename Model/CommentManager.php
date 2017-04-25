@@ -6,6 +6,10 @@ use App\Validator\ValidateComment;
 
 class CommentManager extends Database
 {
+    const LEVELMAX = 4;
+
+    private $comments = array();
+    private $nbComments = 0;
     private $comment;
     private $validator;
     private $message = array();
@@ -22,11 +26,38 @@ class CommentManager extends Database
 
     public function setComment($comment) { $this->comment->hydrate($comment); }
 
+    public function getComments() { return $this->comments; }
+
+    public function setComments($comments) {
+        $this->comments = $comments;
+    }
+
+    public function getNbComments($ticket_id) {
+        $sql = "SELECT COUNT(ticket_id) nb FROM comment WHERE ticket_id = :ticket_id";
+        return $this->runRequest($sql, array(
+            ':ticket_id' => $ticket_id
+        ))->fetch();
+    }
+
+    public function orderComments()
+    {
+        $comments_by_id = array();
+        foreach ($this->comments as $k => $comment) {
+            $this->nbComments = $this->nbComments + 1;
+            $comments_by_id[$comment->id] = $comment;
+            if ($comment->comment_id != 0) {
+                $comments_by_id[$comment->comment_id]->children[] = $comment;
+                unset($this->comments[$k]);
+            }
+        }
+    }
+
     public function isValid()
     {
         $this->validator = new ValidateComment();
         
         $this->validator->validContent($this->comment->getContent());
+        $this->validator->validLevel($this->comment->getLevel(), self::LEVELMAX);
 
         if (empty($this->validator->getErrors())) {
             return true;
@@ -38,9 +69,10 @@ class CommentManager extends Database
 
     public function insert()
     {
-        $sql = "INSERT INTO comment SET content = :content, date = NOW(), level = 0, ticket_id = :ticket_id, user_id = :user_id, comment_id = :comment_id";
+        $sql = "INSERT INTO comment SET content = :content, date = NOW(), level = :level, ticket_id = :ticket_id, user_id = :user_id, comment_id = :comment_id";
         $this->runRequest($sql, array(
             ':content' => $this->comment->getContent(),
+            ':level' => $this->comment->getLevel(),
             ':ticket_id' => $this->comment->getTicket_id(),
             ':user_id' => $this->comment->getUser_id(),
             ':comment_id' => $this->comment->getComment_id(),
@@ -48,16 +80,9 @@ class CommentManager extends Database
         $this->setMessage('success', "Merci de votre commentaire.");
     }
 
-    public function getComments($ticketid)
+    public function getCommentsFromBdd($ticketid)
     {
-        $sql = "SELECT c.id, c.content, c.date, c.report, c.level, c.comment_id, u.firstname, u.lastname
-                FROM comment c
-                INNER JOIN user u
-                ON c.user_id = u.id
-                INNER JOIN ticket t
-                ON c.ticket_id = t.id
-                WHERE t.number = :ticketid
-                ORDER BY c.id";
+        $sql = "SELECT c.id, c.content, DATE_FORMAT(c.date, '%d-%m-%Y - %H:%i:%s') date, c.report, c.level, c.comment_id, u.firstname, u.lastname FROM comment c INNER JOIN user u ON c.user_id = u.id INNER JOIN ticket t ON c.ticket_id = t.id WHERE t.id = :ticketid ORDER BY c.id";
         return $this->runRequest($sql, array(
             ':ticketid' => $ticketid
         ))->fetchAll();
@@ -110,7 +135,7 @@ class CommentManager extends Database
         if (empty($this->validator->getErrors())) {
             return true;
         } else {
-            $this->setMessage('danger', "Un problème a été rencontré lors de l'approbation du commentaire.");
+            $this->setMessage('danger', "Le commentaire n'est pas signalé.");
             return false;
         }
     }
@@ -131,5 +156,6 @@ class CommentManager extends Database
         $this->runRequest($sql, array(
             ':id' => $this->comment->getId()
         ));
+        $this->setMessage('success', "Le commentaire vient d'être supprimé.");
     }
 }

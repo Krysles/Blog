@@ -61,6 +61,12 @@ class Page extends Database {
     public function getTicketsFromPage()
     {
         $start = ($this->getPage() * self::ENTRIESPERPAGE - self::ENTRIESPERPAGE);
-        return $this->ticketManager->getTickets($start, self::ENTRIESPERPAGE);
+        $tickets = $this->ticketManager->getTickets($start, self::ENTRIESPERPAGE);
+        $commentManager = new \App\Model\CommentManager();
+        foreach ($tickets as $key => $ticket) {
+            $nbComments = $commentManager->getNbComments($tickets[$key]['id']);
+            $tickets[$key]['nbComments'] = $nbComments->nb;
+        }
+        return $tickets;
     }
 }

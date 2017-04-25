@@ -89,7 +89,7 @@ class User extends Database
 
     public function checkUser($params)
     {
-        $sql = "SELECT * FROM user WHERE 1 = 1";
+        $sql = "SELECT id, email, password, lastname, firstname, role, confirmToken, DATE_FORMAT(registDate, '%d-%m-%Y') registDate, resetToken, DATE_FORMAT(resetDate, '%d-%m-%Y') resetDate FROM user WHERE 1 = 1";
         foreach ($params as $key => $value) {
             $sql = $sql . " AND $key = :$key";
         }
@@ -114,6 +114,6 @@ class User extends Database
 
     public function banned()
     {
-        
+
     }
 }

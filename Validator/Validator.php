@@ -87,4 +87,11 @@ abstract class Validator extends Database
             return true;
         }
     }
+    
+    public function validInferiority($value, $max)
+    {
+        if ($value <= $max) {
+            return true;
+        }
+    }
 }

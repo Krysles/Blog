@@ -14,7 +14,6 @@ class Ticket extends Database
     private $publish = 0;
     private $date;
 
-
     public function __construct() {
         
     }

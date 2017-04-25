@@ -18,7 +18,7 @@
                                     <span class="category"><?php echo $ticket['firstname'] . ' ' . $ticket['lastname']; ?></span>
                                     <span class="date"><?php echo $ticket['date'] ?></span>
                                     <span class="comments">
-                                        <a href="#">8 <i class="icon-chat-1"></i></a>
+                                        <?php echo $ticket['nbComments']; ?> <i class="icon-chat-1"></i>
                                     </span>
                                 </div>
                                 <p><?php echo substr(strip_tags(htmlspecialchars_decode($ticket['content'])), 0, 150) . '...'; ?></p>

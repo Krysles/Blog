@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Core\Session;
-use App\Model\Ticket;
 use App\Model\User;
 
 class Episode extends \App\Core\Controller
@@ -19,31 +18,8 @@ class Episode extends \App\Core\Controller
     public function read()
     {
         if ($this->request->existParam('get', 'id')) {
-            $ticketid = $this->request->getParam('get', 'id');
-
-
-
-            // Commentaires a reprendre en service ?
-            $commentManager = new \App\Model\CommentManager();
-            $comments = $commentManager->getComments($ticketid);
-
-            $comments_by_id = [];
-
-            /*foreach ($comments as $comment) {
-            }*/
-
-            foreach ($comments as $k => $comment) {
-                $comments_by_id[$comment->id] = $comment;
-                if ($comment->comment_id != 0) {
-                    $comments_by_id[$comment->comment_id]->children[] = $comment;
-                    unset($comments[$k]);
-                }
-            }
-            // -------------------------
-
-
             $ticketManager = new \App\Model\TicketManager();
-            $ticket = $ticketManager->getTicketFromBdd($ticketid);
+            $ticket = $ticketManager->getTicketFromBdd($this->request->getParam('get', 'id'));
             if ($ticket) {
                 $ticketManager->setTicket($ticket);
                 if (($ticketManager->getTicket()->getPublish() == 0) && (Session::getSession()->getRole() < User::ADMIN)) {
@@ -51,10 +27,14 @@ class Episode extends \App\Core\Controller
                     header('Location: /page');
                     exit();
                 } else {
+                    $commentManager = new \App\Model\CommentManager();
+                    $commentManager->setComments($commentManager->getCommentsFromBdd($ticketManager->getTicket()->getId()));
+                    $commentManager->orderComments();
                     $this->generateView(array(
-                        'adjacentTickets' => $ticketManager->getAdjacentTickets($ticketid),
+                        'adjacentTickets' => $ticketManager->getAdjacentTickets($this->request->getParam('get', 'id')),
                         'ticket' => $ticket,
-                        'comments' => $comments
+                        'comments' => $commentManager->getComments(),
+                        'nbComments' => $commentManager->getNbComments($ticketManager->getTicket()->getId())
                     ));
                 }
             } else {

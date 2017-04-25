@@ -24,6 +24,13 @@ class ValidateComment extends Validator
         }
     }
 
+    public function validLevel($level, $max)
+    {
+        if (!$this->validInferiority($level, $max)) {
+            $this->setErrors('level', "Niveau de commentaire atteint.");
+        }
+    }
+
     public function validReport($report)
     {
         if (!$this->validIdenticalValues($report, 1)) {

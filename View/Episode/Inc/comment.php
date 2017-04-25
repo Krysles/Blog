@@ -9,11 +9,16 @@ if (isset($comment->children)) : ?>
                         <div class="meta">
                             <div class="date"><?php echo $comment->date; ?></div>
                             <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
-                                    <button class="reply" data-id="<?php echo $comment->id; ?>">répondre</button>
+                                <?php if ($comment->level < \App\Model\CommentManager::LEVELMAX) : ?>
+                                    <button class="reply" data-id="<?php echo $comment->id; ?>" data-level="<?php echo $comment->level; ?>">répondre</button>
+                                <?php endif; ?>
                                 <?php if ($comment->report == 0) : ?>
                                     <a href="/comment/<?php echo $comment->id; ?>/report" class="report">signaler</a>
                                 <?php else : ?>
-                                    <span><em>Commentaire déjà signalé</em></span>
+                                    <span><em>signalé</em></span>
+                                <?php endif; ?>
+                                <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::ADMIN) : ?>
+                                    <a href="/comment/<?php echo $comment->id; ?>/delete" class="report">supprimer</a>
                                 <?php endif; ?>
                             <?php endif; ?>
                         </div>

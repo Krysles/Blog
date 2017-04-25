@@ -38,8 +38,8 @@ class Message extends Mailer
     {
         $from = array(Config::get("maileraddress") => Config::get("mailerauthor"));
         $to = array($user->getEmail() => $user->getLastname() . ' ' . $user->getFirstname());
-        $objet = "Confirmation d'accès le blog Jean Forteroche";
-        $content = "Bonjour, votre compte a bien été validé, vous pouvez dès à présent vous connecter.";
+        $objet = "Confirmation d'accès au blog Jean Forteroche";
+        $content = "Bonjour, votre compte a été mis à jour, vous pouvez à présent vous connecter avec votre nouveau mot de passe.";
         $this->sendEmail($objet, $from, $to, $content);
     }
 

@@ -14,7 +14,7 @@ class Page extends \App\Core\Controller
         } else {
             $page->setPage(1);
         }
-        
+
         $paginator = new \App\Model\Paginator($page);
         
         $this->generateView(array(

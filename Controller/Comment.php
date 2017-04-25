@@ -2,7 +2,6 @@
 namespace App\Controller;
 
 use App\Core\Session;
-use App\Model\Ticket;
 use App\Model\User;
 
 class Comment extends \App\Core\Controller
@@ -30,13 +29,6 @@ class Comment extends \App\Core\Controller
             $commentManager = new \App\Model\CommentManager();
             $commentManager->setComment($datasForm);
             $commentManager->getComment()->setUser_id(Session::getSession()->getId());
-            /*
-                            echo '<pre>';
-                            print_r($datasForm);
-                            print_r($commentManager);
-                            echo '</pre>';
-            */
-
             if ($commentManager->isValid()) {
                 $commentManager->insert();
                 $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
@@ -114,16 +106,10 @@ class Comment extends \App\Core\Controller
             $commentManager = new \App\Model\CommentManager();
             if ($commentManager->getCommentFromBdd($commentid)) {
                 $commentManager->getComment()->hydrate($commentManager->getCommentFromBdd($commentid));
-                if($commentManager->isReport()) {
-                    $commentManager->delete();
-                    $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
-                    header('Location: /admin');
-                    exit();
-                } else {
-                    $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
-                    header('Location: /admin');
-                    exit();
-                }
+                $commentManager->delete();
+                $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
+                header('Location: /episode/'.$commentManager->getComment()->getTicket_number());
+                exit();
             } else {
                 $this->request->getSession()->setAttribut('flash', array('danger' => "Impossible de trouver le commentaire."));
                 header('Location: /page');

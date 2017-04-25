@@ -8,10 +8,6 @@
     <link rel="shortcut icon" href="/style/images/favicon.png">
     <title><?php echo $title . ' - Jean Forteroche'; ?></title>
     <!-- Bootstrap core CSS -->
-    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Cache" content="no store" />
-    <meta http-equiv="Expires" content="-1" />
     <link href="/style/css/bootstrap.min.css" rel="stylesheet">
     <link href="/style/css/plugins.css" rel="stylesheet">
     <link href="/style/css/prettify.css" rel="stylesheet">
@@ -118,9 +114,11 @@
             var $form = $('#form-comment');
             var $this = $(this);
             var comment_id = $this.data('id');
+            var comment_level = $this.data('level');
             var $comment = $('#comment-' + comment_id);
             
             $('#comment_id').val(comment_id);
+            $('#comment_level').val(comment_level + 1);
 
             $comment.after($form);
         });

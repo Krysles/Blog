@@ -15,7 +15,7 @@
                             <div class="meta">
                                 <span class="category"><?php echo $ticket['firstname'] . ' ' . $ticket['lastname']; ?></span>
                                 <span class="date"><?php echo $ticket['date'] ?></span>
-                                <span class="comments"><a href="#">8 <i class="icon-chat-1"></i></a></span>
+                                <span class="comments"><?php echo $nbComments->nb; ?> <i class="icon-chat-1"></i></span>
                                 <?php if ($ticket['publish'] == 0) : ?>
                                     <span class="publish">Non publié</span>
                                 <?php endif; ?>
@@ -46,11 +46,16 @@
                                             <div class="meta">
                                                 <div class="date"><?php echo $comment->date; ?></div>
                                                 <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
-                                                    <button class="reply" data-id="<?php echo $comment->id; ?>">répondre</button>
+                                                    <?php if ($comment->level < \App\Model\CommentManager::LEVELMAX) : ?>
+                                                        <button class="reply" data-id="<?php echo $comment->id; ?>" data-level="<?php echo $comment->level; ?>">répondre</button>
+                                                    <?php endif; ?>
                                                     <?php if ($comment->report == 0) : ?>
                                                         <a href="/comment/<?php echo $comment->id; ?>/report" class="report">signaler</a>
                                                     <?php else : ?>
-                                                        <span><em>Commentaire déjà signalé</em></span>
+                                                        <span><em>signalé</em></span>
+                                                    <?php endif; ?>
+                                                    <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::ADMIN) : ?>
+                                                        <a href="/comment/<?php echo $comment->id; ?>/delete" class="report">supprimer</a>
                                                     <?php endif; ?>
                                                 <?php endif; ?>
                                             </div>
@@ -69,7 +74,7 @@
 
                 <div class="comment-form-wrapper box">
                     <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::MEMBER) : ?>
-                        <h5 id="comment-0">Laissez votre commentaire - <a class="reply" data-id="0">Commenter l'épisode</a></h5>
+                        <h5 id="comment-0">Laissez votre commentaire - <a class="reply" data-id="0" data-level="0">Commenter l'épisode</a></h5>
                         <form class="comment-form" name="form_name" action="/comment/create" method="post" id="form-comment">
                             <p>Tout commentaire non approprié sera supprimé et l'utilisateur sera restreint.</p>
                             <div class="field">
@@ -78,9 +83,13 @@
                                 <input type="hidden" name="ticket_id" value="<?php echo $ticket['id']; ?>"/>
                                 <input type="hidden" name="ticket_number" value="<?php echo $ticket['number']; ?>"/>
                                 <input type="hidden" name="comment_id" value="0" id="comment_id"/>
+                                <input type="hidden" name="level" value="1" id="comment_level"/>
                             </div>
                             <?php if (isset($_SESSION['commentManagerErrors']['content'])) : ?>
                                 <p class="alert alert-danger"><?php echo $_SESSION['commentManagerErrors']['content']; ?></p>
+                            <?php endif; ?>
+                            <?php if (isset($_SESSION['commentManagerErrors']['level'])) : ?>
+                                <p class="alert alert-danger"><?php echo $_SESSION['commentManagerErrors']['level']; ?></p>
                             <?php endif; ?>
                             <button type="submit" value="submit" name="comment" class="btn btn-submit">Valider</button>
                             <?php unset($_SESSION['commentManagerForm']); ?>
@@ -97,40 +106,6 @@
         <!-- /.content -->
 
         <aside class="col-md-4 col-sm-12 sidebar">
-            <!--
-                        <div class="sidebox box widget">
-                            <h3 class="widget-title section-title">Derniers commentaires</h3>
-                            <ul class="post-list">
-                                <li>
-                                    <figure class="frame pull-left">
-                                        <div class="icon-overlay"><a href="blog-post.html"><img src="/style/images/art/a1.jpg" alt=""/> </a></div>
-                                    </figure>
-                                    <div class="meta"><em><span class="date">3 Oct 2012</span><span class="comments"><a href="#">8 <i class="icon-chat-1"></i></a></span></em>
-                                        <h5><a href="blog-post.html">Magna Mollis Ultricies</a></h5>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure class="frame pull-left">
-                                        <div class="icon-overlay"><a href="blog-post.html"><img src="/style/images/art/a2.jpg" alt=""/> </a></div>
-                                    </figure>
-                                    <div class="meta"><em><span class="date">28 Sep 2012</span><span class="comments"><a href="#">5 <i class="icon-chat-1"></i></a></span></em>
-                                        <h5><a href="blog-post.html">Ornare Nullam Risus</a></h5>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure class="frame pull-left">
-                                        <div class="icon-overlay"><a href="blog-post.html"><img src="/style/images/art/a3.jpg" alt=""/> </a></div>
-                                    </figure>
-                                    <div class="meta"><em><span class="date">15 Aug 2012</span><span class="comments"><a href="#">9 <i class="icon-chat-1"></i></a></span></em>
-                                        <h5><a href="blog-post.html">Euismod Nullam</a></h5>
-                                    </div>
-                                </li>
-                            </ul>
-                            <!-- /.post-list -->
-
-
-            <!-- /.widget -->
-
             <div class="sidebox box widget">
                 <h3 class="widget-title section-title">Episodes adjacents</h3>
                 <ul class="circled">
