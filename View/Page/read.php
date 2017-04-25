@@ -4,7 +4,6 @@
     <div class="blog list-view row">
         <div class="col-md-8 col-sm-12 content">
             <div class="blog-posts">
-
                 <?php foreach ($tickets as $ticket) : ?>
                     <div class="post box">
                         <div class="row">
@@ -46,17 +45,13 @@
                     </div>
                 <?php endforeach; ?>
                 <!-- /.post -->
-
             </div>
             <!-- /.blog-posts -->
-
             <?php echo $paginator; ?>
             <!-- /.pagination -->
-
         </div>
         <!-- /.content -->
         <aside class="col-md-4 col-sm-12 sidebar">
-
             <div class="sidebox box widget">
                 <h3 class="widget-title section-title">Derniers épisodes</h3>
                 <ul class="circled">
@@ -70,7 +65,6 @@
                 </ul>
             </div>
             <!-- /.widget -->
-
             <?php if ($_SESSION['auth']->getRole() >= \App\Model\User::ADMIN) : ?>
             <div class="sidebox box widget">
                 <h3 class="widget-title section-title">Episodes non publiés</h3>
@@ -84,7 +78,6 @@
                     <?php endforeach; ?>
                 </ul>
             </div>
-
             <!-- /.widget -->
             <div class="sidebox box widget">
                 <h3 class="widget-title section-title">Accès rapide</h3>
@@ -95,7 +88,6 @@
             </div>
             <?php endif; ?>
             <!-- /.widget -->
-
         </aside>
         <!-- /column .sidebar -->
     </div>
