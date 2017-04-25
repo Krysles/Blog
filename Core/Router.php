@@ -17,7 +17,6 @@ class Router
 
     public function run()
     {
-        // mettre un try catch
         try {
             $request = new \App\Core\Request($_GET, $_POST, $_FILES);
             $controller = $this->createController($request);
@@ -57,7 +56,9 @@ class Router
 
     private function error(\Exception $e)
     {
-        // ajouter vue erreur pour l'affichage d'une 404
-        echo $e->getMessage();
+        $vue = new \App\Core\View('erreur');
+        $vue->generate(array(
+            'msgError' => $e->getMessage()
+        ));
     }
 }
