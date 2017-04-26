@@ -41,7 +41,7 @@
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="col-sm-6 lp5">
+                        <div class="col-sm-6">
                             <div class="form-row text-area-row">
                                 <label>Message</label>
                                 <textarea name="message" class="text-area required"
