@@ -69,6 +69,20 @@ class CommentManager extends Database
 
     public function insert()
     {
+
+        if ($this->getComment()->getComment_id() == 0 || empty($this->getComment()->getComment_id())) {
+            $this->getComment()->setComment_id(NULL);
+            $sql = "SELECT number ticket_number FROM ticket WHERE id = :id";
+            $this->comment->hydrate($this->runRequest($sql, array(
+                ':id' => $this->comment->getTicket_id()
+            ))->fetch(\PDO::FETCH_ASSOC));
+        } else {
+            $sql = "SELECT c.level level, t.number ticket_number FROM comment c INNER JOIN ticket t ON c.ticket_id = t.id WHERE c.id = :id";
+            $this->comment->hydrate($this->runRequest($sql, array(
+                ':id' => $this->comment->getComment_id()
+            ))->fetch(\PDO::FETCH_ASSOC));
+        }
+        $this->comment->setLevel($this->comment->getLevel() + 1);
         $sql = "INSERT INTO comment SET content = :content, date = NOW(), level = :level, ticket_id = :ticket_id, user_id = :user_id, comment_id = :comment_id";
         $this->runRequest($sql, array(
             ':content' => $this->comment->getContent(),
@@ -152,7 +166,7 @@ class CommentManager extends Database
     }
 
     public function delete() {
-        $sql = "DELETE FROM comment WHERE id = :id OR comment_id = :id";
+        $sql = "DELETE FROM comment WHERE id = :id";
         $this->runRequest($sql, array(
             ':id' => $this->comment->getId()
         ));

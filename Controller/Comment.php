@@ -30,9 +30,7 @@ class Comment extends \App\Core\Controller
             $commentManager->setComment($datasForm);
             $commentManager->getComment()->setUser_id(Session::getSession()->getId());
             if ($commentManager->isValid()) {
-                if ($commentManager->getComment()->getComment_id() == 0) {
-                    $commentManager->getComment()->setComment_id(NULL);
-                }
+                
                 $commentManager->insert();
                 $this->request->getSession()->setAttribut('flash', $commentManager->getMessage());
                 header('Location: /episode/' . $commentManager->getComment()->getTicket_number());

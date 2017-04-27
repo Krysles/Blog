@@ -3,7 +3,7 @@ namespace App\Model;
 
 use \App\Core\Database;
 
-class Book extends Database
+class Book
 {
     private $id;
     private $title;

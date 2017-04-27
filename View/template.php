@@ -64,11 +64,9 @@
             var $form = $('#form-comment');
             var $this = $(this);
             var comment_id = $this.data('id');
-            var comment_level = $this.data('level');
             var $comment = $('#comment-' + comment_id);
             
             $('#comment_id').val(comment_id);
-            $('#comment_level').val(comment_level + 1);
 
             $comment.after($form);
         });

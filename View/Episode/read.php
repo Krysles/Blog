@@ -81,9 +81,7 @@
                                 <input type="text" id="content" name="content" placeholder="Entrez votre commentaire" required="required"
                                        value="<?php if (isset($_SESSION['commentManagerForm'])) : echo $_SESSION['commentManagerForm']->getContent(); endif; ?>"/>
                                 <input type="hidden" name="ticket_id" value="<?php echo $ticket['id']; ?>"/>
-                                <input type="hidden" name="ticket_number" value="<?php echo $ticket['number']; ?>"/>
                                 <input type="hidden" name="comment_id" value="0" id="comment_id"/>
-                                <input type="hidden" name="level" value="1" id="comment_level"/>
                             </div>
                             <?php if (isset($_SESSION['commentManagerErrors']['content'])) : ?>
                                 <p class="alert alert-danger"><?php echo $_SESSION['commentManagerErrors']['content']; ?></p>

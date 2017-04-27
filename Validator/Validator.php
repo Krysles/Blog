@@ -27,7 +27,7 @@ abstract class Validator extends Database
 
     public function validAlphanumeric($value)
     {
-        if (preg_match("#^[A-Za-zéêèëàâäçîïôöùüÿ]*$#", $value)) {
+        if (preg_match("#^[A-Za-zéêèëàâäçîïôöùüÿ][A-Za-zéêèëàâäçîïôöùüÿ ]*$#", $value)) {
             return true;
         }
     }

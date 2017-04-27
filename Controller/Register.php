@@ -11,6 +11,8 @@ class Register extends Controller
             $datasForm = $this->request->getParams('post');
             $register = new \App\Model\Register();
             $register->setUser($datasForm);
+            $register->getUser()->setFirstname(ucfirst($register->getUser()->getFirstname()));
+            $register->getUser()->setLastname(ucfirst($register->getUser()->getLastname()));
             if ($register->isValid()) {
                 $register->register();
                 $this->request->getSession()->setAttribut('flash', $register->getMessage());
