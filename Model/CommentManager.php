@@ -69,7 +69,6 @@ class CommentManager extends Database
 
     public function insert()
     {
-
         if ($this->getComment()->getComment_id() == 0 || empty($this->getComment()->getComment_id())) {
             $this->getComment()->setComment_id(NULL);
             $sql = "SELECT number ticket_number FROM ticket WHERE id = :id";
